@@ -1,0 +1,18 @@
+Neuronal is a project that attempts to simulate neural networks with emphasis on
+the characteristics of the membrane and synapses rather than in the neuron. Many
+studies find that the complexity of the neural network is not in the cells but
+in their connections.
+
+You are programming in Python for rapid prototyping of classes and check it
+conceptually before seeking efficiency.
+
+--------------------------------------------------------------------------------
+
+Neuronal es un proyecto que intenta simular las redes neuronales poniendo el
+énfasis en las características de la membrana y las sinapsis en lugar de en la
+neurona. Muchos estudios determinan que la complejidad de la red neuronal no
+está en las células sino en sus conexiones.
+
+Se está programando en Python para lograr un rápido prototipado de clases y
+comprobar que funciona conceptualmente antes de buscar la eficiencia.
+
