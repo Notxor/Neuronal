@@ -60,14 +60,23 @@ class Neurona(object):
         y no se ha llegado al valor de bloqueo."""
         return (self.acumulador >= 0 and self.acumulador < Membrana.bloqueo)
 
-    def disparar(self):
-        """Si se llama a este miembro y resulta estar activa recorrerá todas las
-        vías eferentes para estimularlas. Después de haber disparado realiza una
-        puesta a cero."""
-        if (self.esta_activa()):
-            for s in self.vias_eferentes:
-                s.estimular()
+    def intentar_disparo(self):
+        """
+        Se dispara si está activa y se resetea en todo caso. Devuelve
+        True si se efectuó disparo, False en caso contrario.
+        """
+        se_disparara = self.esta_activa()
+        if se_disparara:
+            self._disparar()
         self._reset()
+        return se_disparara
+
+    def _disparar(self):
+        """
+        Recorrerá todas las vías eferentes para estimularlas.
+        """
+        for s in self.vias_eferentes:
+            s.estimular()
 
     def _reset(self):
         """Ajusta el acumulador según el valor del umbral de la membrana."""
