@@ -39,9 +39,9 @@ class TestPesoSinapsis(TestsSinapsis):
         self.neurona1.recibir_estimulo(neuronal.Membrana.umbral)
         self.assertTrue(self.neurona1.esta_activa())
         self.assertFalse(self.neurona2.esta_activa())
-        self.neurona1.disparar()
+        self.neurona1.intentar_disparo()
         self.assertTrue(self.neurona2.esta_activa())
-        self.neurona2.disparar()
+        self.neurona2.intentar_disparo()
         self.assertFalse(self.neurona2.esta_activa())
 
 class TestIgualdad(TestsSinapsis):

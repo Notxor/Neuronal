@@ -47,31 +47,27 @@ class TestAnd(TestsTablasVerdad):
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 1 & 1 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 1 & 1 -> 1
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 1 & 0 -> 0
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 1 & 0 -> 0
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 0 & 1 -> 0
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 0 & 1 -> 0
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 0 & 0 -> 0
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 0 & 0 -> 0
 
 class TestOr(TestsTablasVerdad):
     def runTest(self):
@@ -80,32 +76,27 @@ class TestOr(TestsTablasVerdad):
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 1 | 1 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 1 | 1 -> 1
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 1 | 0 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 1 | 0 -> 1
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 0 | 1 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 0 | 1 -> 1
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 0 | 0 -> 0
-        self.nR.disparar()
-
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 0 | 0 -> 0
 
 class TestXOr(TestsTablasVerdad):
     def runTest(self):
@@ -114,28 +105,24 @@ class TestXOr(TestsTablasVerdad):
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 1 | 1 -> 0
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 1 | 1 -> 0
 
         self.nP.recibir_estimulo(neuronal.Membrana.umbral)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 1 | 0 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 1 | 0 -> 1
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(neuronal.Membrana.umbral)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertTrue(self.nR.esta_activa()) # 0 | 1 -> 1
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertTrue(self.nR.intentar_disparo()) # 0 | 1 -> 1
 
         self.nP.recibir_estimulo(0)
         self.nQ.recibir_estimulo(0)
-        self.nP.disparar()
-        self.nQ.disparar()
-        self.assertFalse(self.nR.esta_activa()) # 0 | 0 -> 0
-        self.nR.disparar()
+        self.nP.intentar_disparo()
+        self.nQ.intentar_disparo()
+        self.assertFalse(self.nR.intentar_disparo()) # 0 | 0 -> 0
