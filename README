@@ -3,7 +3,7 @@ the characteristics of the membrane and synapses rather than in the neuron. Many
 studies find that the complexity of the neural network is not in the cells but
 in their connections.
 
-You are programming in Python for rapid prototyping of classes and check it
+It's' being developed in Python for rapid prototyping of classes and check it
 conceptually before seeking efficiency.
 
 --------------------------------------------------------------------------------
@@ -13,6 +13,6 @@ Neuronal es un proyecto que intenta simular las redes neuronales poniendo el
 neurona. Muchos estudios determinan que la complejidad de la red neuronal no
 está en las células sino en sus conexiones.
 
-Se está programando en Python para lograr un rápido prototipado de clases y
+Está siendo programado en Python para lograr un rápido prototipado de clases y
 comprobar que funciona conceptualmente antes de buscar la eficiencia.
 
