@@ -46,5 +46,7 @@ class TestPesoSinapsis(TestsSinapsis):
 
 class TestIgualdad(TestsSinapsis):
     def runTest(self):
-        sinap = neuronal.Sinapsis(self.neurona1, self.neurona2)
+        sinap = self.neurona1.crear_sinapsis_saliente(
+          self.neurona2
+        )
         self.assertEqual(self.sinapsis, sinap)

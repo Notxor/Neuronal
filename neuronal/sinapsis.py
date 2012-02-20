@@ -36,8 +36,3 @@ class Sinapsis(object):
             self.peso += self.peso
         else:
             self.peso += peso
-
-    def __eq__(self, otra):
-        """Si las dos neuronas implicadas son las mismas, las sinapsis son iguales."""
-        return (self.neurona_activadora == otra.neurona_activadora and
-                self.neurona_receptora == otra.neurona_receptora)
