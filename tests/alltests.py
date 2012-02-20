@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #       copyright (c) Notxor 2012
+#       Copyright (C) 2012 dddddd <dddddd@pyphiverses.org>
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -26,6 +27,7 @@ import testneurona
 import testsinapsis
 import testtablasverdad
 import testcapa
+import testnucleo
 
 class AllTests(unittest.TestSuite):
     def __init__(self):
@@ -39,6 +41,8 @@ class AllTests(unittest.TestSuite):
         self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testtablasverdad))
         # cargar los tests para la clase Capa
         self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testcapa))
+        # cargar los tests para la clase Nucleo
+        self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testnucleo))
 
         self.corredor = unittest.TextTestRunner(verbosity=2)
 

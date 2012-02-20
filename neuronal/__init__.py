@@ -1,4 +1,7 @@
-#       copyright (c) Notxor 2012
+# -*- coding: utf-8 -*-
+
+#       copyright Notxor 2012
+#       Copyright (C) 2012 dddddd <dddddd@pyphiverses.org>
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -19,3 +22,4 @@ from membrana import Membrana
 from sinapsis import Sinapsis
 from neurona import Neurona
 from capa import Capa
+from nucleo import Nucleo

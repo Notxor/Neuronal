@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #       copyright (c) Notxor 2012
+#       Copyright (C) 2012 dddddd <dddddd@pyphiverses.org>
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ class Sinapsis(object):
         """
         Controla la creación de la nueva sinapsis y se encarga de actualizar
         las estructuras de datos que sirven para enumerar, indexar y buscar
-        las sinapsis en las neuronas.
+        las sinapsis en las neuronas y los núcleos.
 
         Para evitar duplicar sinapsis que serían equivalentes, no se deben
         instanciar directamente usando esta clase, sino que se deben usar
@@ -48,6 +49,14 @@ class Sinapsis(object):
         self.neurona_receptora.vias[
           (self.neurona_activadora, self.neurona_receptora)
         ] = self
+        # Si alguna forma parte de un núcleo, incluimos la sinapsis
+        # ... en su diccionario indexador 'vias' también. El atributo
+        # ... distintivo 'nucleo' se obtiene en Nucleo.crear_neurona().
+        for neu in neurona_activadora, neurona_receptora:
+            if hasattr(neu, 'nucleo'):
+                neu.nucleo.vias[
+                    (self.neurona_activadora, self.neurona_receptora)
+                ] = self
 
         self.peso = peso
 
