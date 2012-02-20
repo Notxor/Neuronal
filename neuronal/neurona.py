@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#       copyright Notxor 2012
+#       copyright (c) Notxor 2012
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -37,6 +37,9 @@ class Neurona(object):
         # ... Se carga en self.crear_sinapsis_saliente().
         self.vias = {}
         self._reset()
+        # Una neurona sólo puede pertenecer a una capa pero también puede actuar
+        # de forma independiente como 'sensor' externo
+        self.capa = None
 
     def crear_sinapsis_saliente(self, receptora, peso = None):
         """Crea una nueva sinapsis o la refuerza si ya existía."""

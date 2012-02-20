@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#       copyright Notxor 2012
+#       copyright (c) Notxor 2012
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -20,12 +20,28 @@
 from neurona import Neurona
 
 class Capa(object):
+    """La capa es un conjunto de neuronas que presenta algunas restricciones.
+    Dado el problema que representa la 'cuantización' para simular el
+    procesamiento paralelo las restricciones dentro de una capa son las
+    siguientes:
+        1. Las neuronas que pertenezcan a la misma capa no pueden hacer
+           sinapsis entre sí.
+        2. Todas las neuronas que pertenezcan a la misma capa deben encontrarse
+           en el mismo estado: 'cargando' o 'disparando'."""
     def __init__(self):
         self.neuronas = []
 
-    def addNeurona(self, neurona):
-        if (isinstance(neurona, Neurona)):
+    def add_neurona(self, neurona):
+        """Añade una neurona a la capa si cumple con las restricciones."""
+        if (self.cumple_condiciones(neurona)):
+            neurona.capa = self
             self.neuronas.append(neurona)
 
-    def numeroNeuronas(self):
+    def numero_neuronas(self):
         return len(self.neuronas)
+
+    def cumple_condiciones(self, neurona):
+        condiciones = False
+        if (isinstance(neurona, Neurona)):
+            condiciones = True
+        return condiciones

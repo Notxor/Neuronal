@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#       copyright Notxor 2012
+#       copyright (c) Notxor 2012
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@ class TestsCapa(unittest.TestCase):
         self.capa = neuronal.Capa()
         self.neurona1 = neuronal.Neurona()
         self.neurona2 = neuronal.Neurona()
-        self.capa.addNeurona(self.neurona1)
-        self.capa.addNeurona(self.neurona2)
+        self.capa.add_neurona(self.neurona1)
+        self.capa.add_neurona(self.neurona2)
 
     def tearDown(self):
         self.neurona1 = None
@@ -36,4 +36,10 @@ class TestsCapa(unittest.TestCase):
 
 class TestSize(TestsCapa):
     def runTest(self):
-        self.assertEqual(self.capa.numeroNeuronas(), 2)
+        self.assertEqual(self.capa.numero_neuronas(), 2)
+
+# XXX hay que comprobar que dos neuronas en la misma capa no están conectadas
+class TestCondiciones(TestsCapa):
+    def runTest(self):
+        valor = 0       # nu puede cumplir condiciones: es un entero
+        self.assertFalse(self.capa.cumple_condiciones(valor))
