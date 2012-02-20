@@ -48,12 +48,22 @@ class TestReset(TestsNeurona):
 class TestConectar(TestsNeurona):
     def runTest(self):
         s = self.neurona1.crear_sinapsis_saliente(self.neurona2)
+        # Se almacenan en el lugar correcto en función de la dirección.
         self.assertTrue(s in self.neurona1.vias_eferentes)
+        self.assertTrue(s in self.neurona2.vias_aferentes)
         self.assertTrue(s not in self.neurona1.vias_aferentes)
+        self.assertTrue(s not in self.neurona2.vias_eferentes)
+        # Se almacenan en el diccionario indexador general de cada una.
         self.assertTrue(self.neurona1.vias.has_key(
           (self.neurona1, self.neurona2))
         )
+        self.assertTrue(self.neurona2.vias.has_key(
+          (self.neurona1, self.neurona2))
+        )
         self.assertTrue(not self.neurona1.vias.has_key(
+          (self.neurona2, self.neurona1))
+        )
+        self.assertTrue(not self.neurona2.vias.has_key(
           (self.neurona2, self.neurona1))
         )
 

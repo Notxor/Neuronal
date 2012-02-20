@@ -32,9 +32,9 @@ class Neurona(object):
         eferentes."""
         self.vias_eferentes = set()
         self.vias_aferentes = set()
-        # Todas, en cualquier sentido.
+        # Un diccionario indexador con todas, en cualquier sentido.
+        # ... Se carga en el constructor de Sinapsis.
         # ... Con el índice tuple (activadora, receptora).
-        # ... Se carga en self.crear_sinapsis_saliente().
         self.vias = {}
         self._reset()
         # Una neurona sólo puede pertenecer a una capa pero también puede actuar
@@ -47,7 +47,6 @@ class Neurona(object):
             s = self.vias[(self, receptora)]
         except KeyError: # ... No existía, la creamos y añadimos.
             s = Sinapsis(self, receptora, peso)
-            self.vias[(self, receptora)] = s
         else: # ... Sí existía, se refuerza.
             s.reforzar(peso)
         return s
