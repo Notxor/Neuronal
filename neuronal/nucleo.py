@@ -18,11 +18,12 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
+from glioblasto import Glioblasto
 from neurona import Neurona
 
-class Nucleo(Neurona):
+class Nucleo(Glioblasto):
     def __init__(self):
-        Neurona.__init__(self)
+        Glioblasto.__init__(self)
         self._neuronas = [] # Notxor intuye que la necesitaremos.
         self._entradas = []
         self._salidas = []

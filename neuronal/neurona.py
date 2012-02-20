@@ -18,19 +18,23 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
+from glioblasto import Glioblasto
 from membrana import Membrana
 from sinapsis import Sinapsis
 
-class Neurona(object):
-    """Elemento estructural base de la red neuronal"""
-
+class Neurona(Glioblasto):
+    """Elemento base con capacidad de comuncicación de la red neuronal."""
     def __init__(self):
-        """La neurona mantiene una lista de sinapsis llamada 'vias_eferentes' y
-        además tiene un valor llamado 'acumulador' donde se va guardando el valor
-        de los pesos de las neuronas conectadas. Si llega el momento de disparar
-        y la neurona cumple con las condiciones para estar activa, envía un
-        mensaje de estimulación a todas las sinapsis registradas como vias
-        eferentes."""
+        """Mantiene dos conjuntos de sinapsis, 'vias_eferentes' y
+        'vias_aferentes', además de un 'acumulador' donde se va acumulando
+        los valores de los estímulos recibidos desde otros elementos
+        conectados.
+
+        Es capaz de disparar, si se dan las condiciones adecuadas, lo que
+        significa que se envían estímulos por todas las sinapsis registradas
+        como vias eferentes.
+        """
+        Glioblasto.__init__(self)
         self.vias_eferentes = set()
         self.vias_aferentes = set()
         # Un diccionario indexador con todas, en cualquier sentido.
@@ -53,14 +57,20 @@ class Neurona(object):
         return s
 
     def recibir_estimulo(self, valor):
-        """Actualiza el valor del acumulador. La neurona resulta estar como
-        receptora en una sinapsis y la que hace de eferente se ha activado, por
-        eso la sinapsis ha mandado un mensaje de actualización del acumulador."""
+        """
+        Actualiza acumulador, sumándole 'valor'.
+
+        Es recibido a través de una sinapsis tras haberse activado el
+        elemento de la parte emisora, lo que nos define como parte
+        receptora. (En concreto, lo ejecuta Sinapsis.estimular()).
+        """
         self.acumulador += valor
 
     def esta_activa(self):
-        """La neurona está activa si se ha sobrepasado el umbral de la membrana
-        y no se ha llegado al valor de bloqueo."""
+        """
+        Está activa si se ha sobrepasado el umbral de la membrana
+        y no se ha llegado al valor de bloqueo.
+        """
         _acumulador = float(self.acumulador)
         return (_acumulador >= 0 and _acumulador < Membrana.bloqueo)
 
@@ -76,9 +86,7 @@ class Neurona(object):
         return se_disparara
 
     def _disparar(self):
-        """
-        Recorrerá todas las vías eferentes para estimularlas.
-        """
+        """Estimula cada una de las vías eferentes."""
         for s in self.vias_eferentes:
             s.estimular()
 
