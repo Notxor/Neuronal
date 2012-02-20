@@ -60,7 +60,8 @@ class Neurona(object):
     def esta_activa(self):
         """La neurona está activa si se ha sobrepasado el umbral de la membrana
         y no se ha llegado al valor de bloqueo."""
-        return (self.acumulador >= 0 and self.acumulador < Membrana.bloqueo)
+        _acumulador = float(self.acumulador)
+        return (_acumulador >= 0 and _acumulador < Membrana.bloqueo)
 
     def intentar_disparo(self):
         """
@@ -82,4 +83,4 @@ class Neurona(object):
 
     def _reset(self):
         """Ajusta el acumulador según el valor del umbral de la membrana."""
-        self.acumulador = -1 * Membrana.umbral
+        self.acumulador = float(-1 * Membrana.umbral)
