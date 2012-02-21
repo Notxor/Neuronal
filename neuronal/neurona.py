@@ -46,16 +46,6 @@ class Neurona(Glioblasto):
         # de forma independiente como 'sensor' externo
         #self.capa = None
 
-    def crear_sinapsis_saliente(self, receptora, peso = None):
-        """Crea una nueva sinapsis o la refuerza si ya existía."""
-        try: # Veamos si existe...
-            s = self.vias[(self, receptora)]
-        except KeyError: # ... No existía, la creamos y añadimos.
-            s = Sinapsis(self, receptora, peso)
-        else: # ... Sí existía, se refuerza.
-            s.reforzar(peso)
-        return s
-
     def recibir_estimulo(self, valor):
         """
         Actualiza acumulador, sumándole 'valor'.

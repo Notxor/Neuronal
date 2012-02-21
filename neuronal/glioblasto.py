@@ -18,6 +18,8 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
+from sinapsis import Sinapsis
+
 class Glioblasto(object):
     """Base de todos los elementos de la red neuronal."""
     def __init__(self):
@@ -27,3 +29,13 @@ class Glioblasto(object):
         # Se carga en el constructor de Sinapsis
         # ... con el índice tuple (activadora, receptora).
         self.vias = {}
+
+    def crear_sinapsis_saliente(self, receptora, peso = None):
+        """Crea una nueva sinapsis o la refuerza si ya existía."""
+        try: # Veamos si existe...
+            s = self.vias[(self, receptora)]
+        except KeyError: # ... No existía, la creamos y añadimos.
+            s = Sinapsis(self, receptora, peso)
+        else: # ... Sí existía, se refuerza.
+            s.reforzar(peso)
+        return s
