@@ -25,7 +25,7 @@ class Nucleo(Neurona):
         Neurona.__init__(self)
         self._neuronas = [] # Notxor intuye que la necesitaremos.
 
-    def crear_neurona(self):
+    def crear_neurona(self, incluir = True):
         """
         Crea y devuelve una neurona. Se le pone una referencia al núcleo en el
         miembro 'nucleo' de la neurona, para detectar si forma parte de un
@@ -35,10 +35,16 @@ class Nucleo(Neurona):
         Toda neurona que vaya a formar parte de un núcleo ha de crearse con
         este método, o su wrapper crear_neuronas(), que permite crear una
         cantidad determinada de neuronas.
+
+        El parámetro 'incluir' nos permite tener control sobre si la
+        nueva neurona se debe añadir/incluir en las estructuras
+        contabilizadoras del núcleo. Sirve para hacer creaciones en masa
+        más efecientemente. Véase crear_neuronas().
         """
         n = Neurona()
         n.nucleo = self
-        self._neuronas.append(n)
+        if incluir:
+            self._neuronas.append(n)
         return n
 
     def crear_neuronas(self, cantidad):
@@ -49,7 +55,10 @@ class Nucleo(Neurona):
         nuevas_neuronas = []
         i = 0
         while i < cantidad:
-            nuevas_neuronas.append(self.crear_neurona())
+            # Se posterga la inclusión, para hacerlo en masa al final, ya
+            # ... que necesitamos crear la lista para devolverla, creo
+            # ... que es mejor actualizar self._neuronas de un golpe.
+            nuevas_neuronas.append(self.crear_neurona(incluir = False))
             i += 1
         self._neuronas.extend(nuevas_neuronas)
         return nuevas_neuronas

@@ -43,6 +43,8 @@ class TestCrearNeuronas(TestsNucleo):
     def runTest(self):
         nn = self.nucleo.crear_neuronas(3)
         self.assertEqual(len(nn), 3)
+        self.assertEqual(len(self.nucleo.neuronas), 3)
+        self.assertEqual(len(self.nucleo._neuronas), 3)
         # Las neuronas creadas han de ser únicas.
         self.assertTrue(nn[0] != nn[1])
         self.assertTrue(nn[1] != nn[2])
