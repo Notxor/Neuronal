@@ -52,7 +52,7 @@ class NeuroPerceptor(object):
         """
         n_conexiones = len(self.sensores)
         # Crear neuronas en el destino, que serviran de receptoras.
-        remotas = red.crear_neuronas(n_conexiones)
+        remotas = red.crear_neuronas_de_entrada(n_conexiones)
         # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
         for i in xrange(n_conexiones):
             self.sensores[i].crear_sinapsis_saliente(remotas[i])
