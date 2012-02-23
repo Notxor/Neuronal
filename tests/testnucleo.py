@@ -98,3 +98,15 @@ class TestInterconectarNeuronasConNucleo(TestsNucleo):
         self.assertTrue(self.nucleo.vias.has_key((nA, nen2)))
         self.assertTrue(self.nucleo.vias.has_key((nB, nen2)))
         self.assertFalse(self.nucleo.vias.has_key((nB, nen1)))
+
+class TestCrearSinapsisAlAzar(TestsNucleo):
+    def runTest(self):
+        inputs = 2
+        n = 20
+        outputs = 1
+        sentido = neuronal.NeuroPerceptor(inputs, self.nucleo)
+        self.nucleo.crear_neuronas(n)
+        self.assertEqual(len(self.nucleo._neuronas), inputs + n)
+        salidas = self.nucleo.crear_neuronas_de_salida(outputs)
+        self.assertEqual(len(self.nucleo._neuronas), inputs + n + outputs)
+        self.nucleo.crear_sinapsis_al_azar(n*8, -10, 10)

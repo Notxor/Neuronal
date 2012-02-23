@@ -113,3 +113,25 @@ class Nucleo(Neurona):
         nn = self.crear_neuronas(cantidad)
         self._salidas.extend(nn)
         return nn
+
+    def crear_sinapsis_al_azar(self, cantidad, min, max):
+        """
+        Crea una 'cantidad' de sinapsis al azar, con un peso entre 'min'
+        y 'max', también al azar. Tanto desde las neuronas de entrada,
+        las neuronas internar entre sí y como éstas con las salidas.
+        """
+        import random
+        n_neuronas = len(self._neuronas)
+        posibles_eferentes = tuple(set(self._neuronas) - set(self._salidas))
+        for i in xrange(cantidad):
+            # Una neurona al azar.
+            n1 = random.choice(posibles_eferentes)
+            # Otra, que no sea la anterior.
+            n2 = random.choice(self._neuronas)
+            while n1 == n2 or n2 in self._entradas:
+                #print('retry')
+                n2 = random.choice(self._neuronas)
+            # Un peso al azar.
+            peso = float(random.uniform(min, max))
+            #print(peso)
+            n1.crear_sinapsis_saliente(n2, peso)
