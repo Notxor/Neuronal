@@ -29,30 +29,30 @@ class TestsNeuroperceptor(unittest.TestCase):
     def tearDown(self):
         self.nucleo = None
 
-class TestCrearSentido(TestsNeuroperceptor):
+class TestCrearNeuroperceptor(TestsNeuroperceptor):
     def runTest(self):
-        neuroperceptor = neuronal.Neuroperceptor(4)
-        self.assertTrue(isinstance(neuroperceptor, neuronal.Neuroperceptor))
+        neuroperceptor = neuronal.NeuroPerceptor(4)
+        self.assertTrue(isinstance(neuroperceptor, neuronal.NeuroPerceptor))
         self.assertTrue(neuroperceptor._red is None)
         self.assertEqual(len(neuroperceptor.sensores), 4)
 
 class TestCrearSentidoConectado(TestsNeuroperceptor):
     def runTest(self):
-        sentido = neuronal.NeuroPerceptor(4, self.nucleo)
-        self.assertEqual(sentido._red, self.nucleo)
+        neuroperceptor = neuronal.NeuroPerceptor(4, self.nucleo)
+        self.assertEqual(neuroperceptor._red, self.nucleo)
 
 class TestCrearSentidoMasConectar(TestsNeuroperceptor):
     def runTest(self):
-        sentido = neuronal.NeuroPerceptor(4)
-        self.assertTrue(isinstance(sentido, neuronal.NeuroPerceptor))
-        sentido._conectar_a_red_receptora(self.nucleo)
-        self.assertEqual(sentido._red, self.nucleo)
+        neuroperceptor = neuronal.NeuroPerceptor(4)
+        self.assertTrue(isinstance(neuroperceptor, neuronal.NeuroPerceptor))
+        neuroperceptor._conectar_a_red_receptora(self.nucleo)
+        self.assertEqual(neuroperceptor._red, self.nucleo)
 
 class TestEnviarSensacion(TestsNeuroperceptor):
     def runTest(self):
-        sentido = neuronal.NeuroPerceptor(3, self.nucleo)
-        sentido.recibir_sensacion_externa((1, 2, 4))
-        sentido.enviar_estimulos()
+        neuroperceptor = neuronal.NeuroPerceptor(3, self.nucleo)
+        neuroperceptor.recibir_sensacion_externa((1, 2, 4))
+        neuroperceptor.enviar_estimulos()
         # Valor de partida del acumulador en las neuronas.
         a0 = float(-1 * neuronal.Membrana.umbral)
         # Los acumuladores de las neuronas receptoras han reaccionado

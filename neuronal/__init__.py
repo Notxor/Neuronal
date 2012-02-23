@@ -24,3 +24,4 @@ from neurona import Neurona
 from capa import Capa
 from nucleo import Nucleo
 from neuroperceptor import NeuroPerceptor
+from neuromotor import NeuroMotor

@@ -21,28 +21,28 @@
 from neurona import Neurona
 
 class _Motor(Neurona):
-    """Elemento de entrada de un neuroperceptor."""
-    def __init__(self, neuroperceptor):
+    """Elemento de salida neuromotora."""
+    def __init__(self, neuromotor):
         Neurona.__init__(self)
-        self.vias_eferentes = set()
-        self.neuroperceptor = neuroperceptor
+        self.vias_aferentes = set()
+        self.neuromotor = neuromotor
 
-class NeuroPerceptor(object):
+class NeuroMotor(object):
     """Conjunto de sensores. Proporciona datos de entrada a una red."""
-    def __init__(self, cantidad_de_sensores, red = None):
+    def __init__(self, cantidad_de_motores, red = None):
         """
-        Los sensores son una lista inmutable (tuple), por lo tanto no
-        cambian a lo largo de la vida del neuroperceptor.
+        Las neuronas motoras están en una lista inmutable (tuple), por lo tanto
+        no cambian a lo largo de la vida del neuromotor.
         """
-        self.sensores = tuple(
-          _Motor(self) for i in xrange(cantidad_de_sensores)
+        self.motoras = tuple(
+          _Motor(self) for i in xrange(cantidad_de_motores)
         )
 
         self._red = None
         if red is not None:
-            self._conectar_a_red_receptora(red)
+            self._conectar_a_red_aferente(red)
 
-    def _conectar_a_red_receptora(self, red):
+    def _conectar_a_red_aferente(self, red):
         """
         Crea y conecta neuronas de entrada en el 'nucleo', tantas como sensores
         haya en el neuroperceptor, mediante sinapsis sensor->neurona. Es
@@ -50,27 +50,19 @@ class NeuroPerceptor(object):
         neuronas del núcleo. El objetivo es que sean disparadas al inicio del
         'ciclo' para reducir el número de pasadas que habrá que darle al núcleo.
         """
-        n_conexiones = len(self.sensores)
+        n_conexiones = len(self.motoras)
         # Crear neuronas en el destino, que serviran de receptoras.
         remotas = red.crear_neuronas(n_conexiones)
         # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
         for i in xrange(n_conexiones):
-            self.sensores[i].crear_sinapsis_saliente(remotas[i])
+            self.motoras[i].crear_sinapsis_saliente(remotas[i])
         # Guardamos una referencia a la red.
         self._red = red
-
-    def recibir_sensacion_externa(self, informacion):
-        """
-        Permite cargar de un golpe los valores en los sensores.
-        """
-        for i, x in enumerate(informacion):
-            for sinapsis in self.sensores[i].vias.values():
-                sinapsis.peso = x
 
     def enviar_estimulos(self):
         """
         Envía todos los estimulos de la sensación actual en este neuroperceptor mediante las sinapsis que están conectadas a la red receptora.
         """
-        for sensor in self.sensores:
-            for sinapsis in sensor.vias_eferentes:
+        for motor in self.motoras:
+            for sinapsis in motor.vias_aferentes:
                 sinapsis.estimular()
