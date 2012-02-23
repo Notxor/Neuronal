@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#       Copyright (c) 2012 Notxor <gnotxor@gmail.com>
 #       Copyright (C) 2012 dddddd <dddddd@pyphiverses.org>
+#       Copyright (c) 2012 Notxor <gnotxor@gmail.com>
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -76,8 +76,7 @@ class Nucleo(Neurona):
             más rápida que un bucle... siguiendo la programación funcional. Lo
             que hace es recorrer todas las neuronas disparándolas.
             """
-            for i in range(veces):
-                [n.intentar_disparo() for n in self._neuronas]
+            [n.intentar_disparo() for n in self._neuronas]
         elif(modo == 'debug'):
             """
             El modo 'debug' aún no hace nada, pero lo que debe hacer es disparar
