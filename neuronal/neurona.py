@@ -40,7 +40,7 @@ class Neurona(object):
         self._reset()
         # Una neurona sólo puede pertenecer a una capa pero también puede actuar
         # de forma independiente como 'sensor' externo
-        self.capa = None
+        #self.capa = None
 
     def crear_sinapsis_saliente(self, receptora, peso = None):
         """Crea una nueva sinapsis o la refuerza si ya existía."""

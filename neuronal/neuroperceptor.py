@@ -20,7 +20,7 @@
 
 from neurona import Neurona
 
-class _Motor(Neurona):
+class _Perceptor(Neurona):
     """Elemento de entrada de un neuroperceptor."""
     def __init__(self, neuroperceptor):
         Neurona.__init__(self)
@@ -35,7 +35,7 @@ class NeuroPerceptor(object):
         cambian a lo largo de la vida del neuroperceptor.
         """
         self.sensores = tuple(
-          _Motor(self) for i in xrange(cantidad_de_sensores)
+          _Perceptor(self) for i in xrange(cantidad_de_sensores)
         )
 
         self._red = None

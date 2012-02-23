@@ -44,25 +44,17 @@ class NeuroMotor(object):
 
     def _conectar_a_red_aferente(self, red):
         """
-        Crea y conecta neuronas de entrada en el 'nucleo', tantas como sensores
-        haya en el neuroperceptor, mediante sinapsis sensor->neurona. Es
-        conveniente que dichas neuronas sean las que inician la lista de
-        neuronas del núcleo. El objetivo es que sean disparadas al inicio del
+        Crea y conecta neuronas de salida en el 'nucleo', tantas como motores
+        haya en el neuromotor, mediante sinapsis neurona->motor. Es
+        conveniente que dichas neuronas sean las que finalizan la lista de
+        neuronas del núcleo. El objetivo es que sean disparadas al final del
         'ciclo' para reducir el número de pasadas que habrá que darle al núcleo.
         """
         n_conexiones = len(self.motoras)
         # Crear neuronas en el destino, que serviran de receptoras.
-        remotas = red.crear_neuronas(n_conexiones)
+        red.crear_neuronas(n_conexiones)
         # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
         for i in xrange(n_conexiones):
-            self.motoras[i].crear_sinapsis_saliente(remotas[i])
+            red.neuronas[-i].crear_sinapsis_saliente(self.motoras[i])
         # Guardamos una referencia a la red.
         self._red = red
-
-    def enviar_estimulos(self):
-        """
-        Envía todos los estimulos de la sensación actual en este neuroperceptor mediante las sinapsis que están conectadas a la red receptora.
-        """
-        for motor in self.motoras:
-            for sinapsis in motor.vias_aferentes:
-                sinapsis.estimular()
