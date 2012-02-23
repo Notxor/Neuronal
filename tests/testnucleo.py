@@ -124,3 +124,5 @@ class TestCrearSinapsisAlAzar(TestsNucleo):
           min_peso_sinapsis,
           max_peso_sinapsis
         )
+        if False:
+            self.nucleo._dot_file_to_stdout()

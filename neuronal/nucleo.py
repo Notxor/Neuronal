@@ -135,3 +135,27 @@ class Nucleo(Neurona):
             peso = float(random.uniform(min, max))
             #print(peso)
             n1.crear_sinapsis_saliente(n2, peso)
+
+    def _dot_file_to_stdout(self):
+        def print_sub_arbol(root):
+            for s in root.vias_eferentes:
+                if root != s.neurona_activadora:
+                    print('BUG')
+                color = 'red' if s.peso <= 0 else 'green'
+                print('n%s -> n%s [weight=%s, penwidth=%s, color=%s];' % (
+                  id(root),
+                  id(s.neurona_receptora),
+                  abs(s.peso / 4), abs(s.peso / 4),
+                  color
+                  )
+                )
+        print('digraph G{')
+        for i in self._neuronas:
+            color = '"#dddddd"'
+            if i in self._entradas:
+                color = '"#00dddd"'
+            elif i in self._salidas:
+                color = '"#ffdd22"'
+            print('n%s [style=filled, color=%s];' % (id(i), color))
+            print_sub_arbol(i)
+        print('}')
