@@ -58,3 +58,12 @@ class NeuroMotor(object):
             red.neuronas[-i].crear_sinapsis_saliente(self.motoras[i])
         # Guardamos una referencia a la red.
         self._red = red
+
+    def _conectar_motorizacion(self, funciones):
+        """
+        Este miembro recibe una lista de funciones y le asigna cada una de ellas
+        a una neurona motora de la red, de modo que si usa salida es activada
+        por la red, se ejecutará el código contenido en la función asociada.
+        """
+        if (len(funciones) != len(self.motoras)):
+            raise "No coincide el número de neuronas con las acciones."
