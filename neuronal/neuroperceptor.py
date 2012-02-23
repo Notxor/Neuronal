@@ -18,12 +18,12 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-from neurona import Neurona
+from glioblasto import Glioblasto
 
-class _Perceptor(Neurona):
+class _Perceptor(Glioblasto):
     """Elemento de entrada de un neuroperceptor."""
     def __init__(self, neuroperceptor):
-        Neurona.__init__(self)
+        Glioblasto.__init__(self)
         self.vias_eferentes = set()
         self.neuroperceptor = neuroperceptor
 

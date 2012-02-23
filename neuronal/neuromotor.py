@@ -18,12 +18,12 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-from neurona import Neurona
+from glioblasto import Glioblasto
 
-class _Motor(Neurona):
+class _Motor(Glioblasto):
     """Elemento de salida neuromotora."""
     def __init__(self, neuromotor):
-        Neurona.__init__(self)
+        Glioblasto.__init__(self)
         self.vias_aferentes = set()
         self.neuromotor = neuromotor
 
