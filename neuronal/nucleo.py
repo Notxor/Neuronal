@@ -24,6 +24,8 @@ class Nucleo(Neurona):
     def __init__(self):
         Neurona.__init__(self)
         self._neuronas = [] # Notxor intuye que la necesitaremos.
+        self._entradas = []
+        self._salidas = []
 
     def crear_neurona(self, incluir = True):
         """
@@ -93,3 +95,21 @@ class Nucleo(Neurona):
             la red.
             """
             pass
+
+    def crear_neuronas_de_entrada(self, cantidad):
+        """
+        Crear y devuelve una 'cantidad' de neuronas que actuarán como
+        entradas del núcleo.
+        """
+        nn = self.crear_neuronas(cantidad)
+        self._entradas.extend(nn)
+        return nn
+
+    def crear_neuronas_de_salida(self, cantidad):
+        """
+        Crear y devuelve una 'cantidad' de neuronas que actuarán como
+        salidas del núcleo.
+        """
+        nn = self.crear_neuronas(cantidad)
+        self._salidas.extend(nn)
+        return nn
