@@ -104,28 +104,28 @@ class TestInterconectarNeuronasConNucleo(TestsNucleo):
 
 class TestCrearSinapsisAlAzar(TestsNucleo):
     def runTest(self):
+        # Parámetros de cantidad de neuronas en el núcleo.
         n_entradas = 2 # Número de neuronas entrada.
-        n = 20 # Nñumero de neuronas "internas".
+        n = 20 # Número de neuronas "internas".
         n_salidas = 1 # Número de neuronas salida.
+        # Parámetros para la creación de sinapsis.
         n_sinapsis = n * 8 # Número de sinapsis entre neuronas del núcleo.
         min_peso_sinapsis = -10
         max_peso_sinapsis = 10
-        # Crear el NeuroPerceptor, con sus entradas.
-        sentido = neuronal.NeuroPerceptor(n_entradas, self.nucleo)
-        # Crear las neuronas internas.
-        self.nucleo.crear_neuronas(n)
-        self.assertEqual(len(self.nucleo._neuronas), n_entradas + n)
-        # Crear las salidas.
-        salidas = self.nucleo.crear_neuronas_de_salida(n_salidas)
+        # No utilizamos el núcleo de los demás tests.
+        nucleo = neuronal.Nucleo(n, n_salidas)
+        self.assertEqual(len(nucleo._neuronas), n + n_salidas)
+        # Crear las neuronas en el núcleo con un NeuroPerceptor.
+        neuronal.NeuroPerceptor(n_entradas, nucleo)
         self.assertEqual(
-          len(self.nucleo._neuronas),
+          len(nucleo._neuronas),
           n_entradas + n + n_salidas
         )
         # Crear las sinapsis aleatoriamente.
-        self.nucleo.crear_sinapsis_al_azar(
+        nucleo.crear_sinapsis_al_azar(
           n_sinapsis,
           min_peso_sinapsis,
           max_peso_sinapsis
         )
         if False:
-            self.nucleo._dot_file_to_stdout()
+            nucleo._dot_file_to_stdout()
