@@ -44,20 +44,25 @@ class NeuroMotor(object):
 
     def _conectar_a_red_aferente(self, red):
         """
-        Crea y conecta neuronas de salida en el 'nucleo', tantas como motores
-        haya en el neuromotor, mediante sinapsis neurona->motor. Es
-        conveniente que dichas neuronas sean las que finalizan la lista de
+        Crea tantas neuronas de salida en la 'red' como motoras haya en
+        este neuromotor, y las conecta (mediante sinapsis salida->motora).
+
+        Es conveniente que dichas neuronas sean las que finalizan la lista de
         neuronas del núcleo. El objetivo es que sean disparadas al final del
-        'ciclo' para reducir el número de pasadas que habrá que darle al núcleo.
+        'ciclo' para reducir el número de pasadas que habrá que darle a la
+        red. Por lo tanto, lo ideal es llamar a esta función como último
+        paso de la creación de la red.
         """
         n_conexiones = len(self.motoras)
-        # Crear neuronas en el destino, que serviran de receptoras.
-        red.crear_neuronas(n_conexiones)
-        # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
+        # Crear neuronas en la red, que serviran de emisoras.
+        nuevas_salidas = red.crear_neuronas_de_salida(n_conexiones)
+        # Conectar las nuevas salidas (mediante sinapsis) a
+        # ... las motoras de este neuromotor.
         for i in xrange(n_conexiones):
-            red.neuronas[-i].crear_sinapsis_saliente(self.motoras[i])
+            nuevas_salidas[i].crear_sinapsis_saliente(self.motoras[i])
         # Guardamos una referencia a la red.
         self._red = red
+
 
     def _conectar_motorizacion(self, funciones):
         """
