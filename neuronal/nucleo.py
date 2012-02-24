@@ -115,14 +115,14 @@ class Nucleo(Glioblasto):
         self._salidas.extend(nn)
         return nn
 
-    def crear_sinapsis_al_azar(self, cantidad, min, max):
+    def crear_sinapsis_al_azar(self, cantidad, minimo, maximo):
         """
-        Crea una 'cantidad' de sinapsis al azar, con un peso entre 'min'
-        y 'max', también al azar. Tanto desde las neuronas de entrada,
+        Crea una 'cantidad' de sinapsis al azar, con un peso entre 'minimo'
+        y 'maximo', también al azar. Tanto desde las neuronas de entrada,
         las neuronas internar entre sí y como éstas con las salidas.
         """
         import random
-        n_neuronas = len(self._neuronas)
+        #n_neuronas = len(self._neuronas)
         posibles_eferentes = tuple(set(self._neuronas) - set(self._salidas))
         for i in xrange(cantidad):
             # Una neurona al azar.
@@ -133,7 +133,7 @@ class Nucleo(Glioblasto):
                 #print('retry')
                 n2 = random.choice(self._neuronas)
             # Un peso al azar.
-            peso = float(random.uniform(min, max))
+            peso = float(random.uniform(minimo, maximo))
             #print(peso)
             n1.crear_sinapsis_saliente(n2, peso)
 

@@ -20,7 +20,6 @@
 
 from glioblasto import Glioblasto
 from membrana import Membrana
-from sinapsis import Sinapsis
 
 class Neurona(Glioblasto):
     """Elemento base con capacidad de comuncicación de la red neuronal."""
