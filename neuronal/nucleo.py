@@ -22,11 +22,18 @@ from glioblasto import Glioblasto
 from neurona import Neurona
 
 class Nucleo(Glioblasto):
-    def __init__(self):
+    def __init__(self,
+      cantidad_de_neuronas_internas = 0,
+      cantidad_de_neuronas_de_salida = 0
+    ):
         Glioblasto.__init__(self)
-        self._neuronas = [] # Notxor intuye que la necesitaremos.
+        self._neuronas = []
         self._entradas = []
         self._salidas = []
+        # Crear las neuronas internas.
+        self.crear_neuronas(cantidad_de_neuronas_internas)
+        # Crear las salidas.
+        self.crear_neuronas_de_salida(cantidad_de_neuronas_de_salida)
 
     def crear_neurona(self, incluir = True):
         """
