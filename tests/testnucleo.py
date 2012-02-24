@@ -30,7 +30,7 @@ class TestsNucleo(unittest.TestCase):
 
 class TestCrearNeurona(TestsNucleo):
     def runTest(self):
-        n = self.nucleo.crear_neurona()
+        n = self.nucleo.crear_neuronas(1)[0]
         self.assertTrue(isinstance(n, neuronal.Neurona))
         # En la propiedad.
         self.assertEqual(len(self.nucleo.neuronas), 1)
@@ -64,12 +64,15 @@ class TestInterconectarNeuronasConNucleo(TestsNucleo):
         nA = neuronal.Neurona()
         nB = neuronal.Neurona()
         # Sinapsis conectando con nueva neuronas de entrada creada ad-hoc
-        s01 = nA.crear_sinapsis_saliente(self.nucleo.crear_neurona(), 1)
+        s01 = nA.crear_sinapsis_saliente(
+          self.nucleo.crear_neuronas(1)[0],
+          1
+        )
         # ... y obtenemos una referencia a la nueva neurona.
         nen1 = s01.neurona_receptora # nen: Neurona Entrada a Nucleo.
         # Método alternativo.
         # ... Creamos la neurona en el núcleo
-        nen2 = self.nucleo.crear_neurona()
+        nen2 = self.nucleo.crear_neuronas(1)[0]
         # ... y hacemos que sea la receptora otra.
         s02 = nB.crear_sinapsis_saliente(nen2, 2)
         # Estimulan correctamente.

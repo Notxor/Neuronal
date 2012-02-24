@@ -35,43 +35,46 @@ class Nucleo(Glioblasto):
         # Crear las salidas.
         self.crear_neuronas_de_salida(cantidad_de_neuronas_de_salida)
 
-    def crear_neurona(self, incluir = True):
-        """
-        Crea y devuelve una neurona. Se le pone una referencia al núcleo en el
-        miembro 'nucleo' de la neurona, para detectar si forma parte de un
-        núcleo. Por ejemplo, nos interesa saberlo al crear una sinapsis, para
-        actualizar el diccionario indexador 'vias' de núcleo.
-
-        Toda neurona que vaya a formar parte de un núcleo ha de crearse con
-        este método, o su wrapper crear_neuronas(), que permite crear una
-        cantidad determinada de neuronas.
-
-        El parámetro 'incluir' nos permite tener control sobre si la
-        nueva neurona se debe añadir/incluir en las estructuras
-        contabilizadoras del núcleo. Sirve para hacer creaciones en masa
-        más efecientemente. Véase crear_neuronas().
-        """
-        n = Neurona()
-        n.nucleo = self
-        if incluir:
-            self._neuronas.append(n)
-        return n
-
     def crear_neuronas(self, cantidad):
         """
         Crea y devuelve una 'cantidad' de neuronas (en una lista), que
-        formarán parte del núcleo, de la misma manera que crear_neurona().
+        formarán parte del núcleo, como neuronas "internas" (las que no
+        son ni de entrada ni de salida).
+
+        Toda neurona que vaya a formar parte de un núcleo ha de crearse
+        con este método.
+
+        Se le pone una referencia al núcleo en el miembro 'nucleo' de la
+        neurona, para detectar si forma parte de un núcleo. Por ejemplo,
+        nos interesa saberlo al crear una sinapsis, para actualizar el
+        diccionario indexador 'vias' de núcleo.
         """
-        nuevas_neuronas = []
-        i = 0
-        while i < cantidad:
-            # Se posterga la inclusión, para hacerlo en masa al final, ya
-            # ... que necesitamos crear la lista para devolverla, creo
-            # ... que es mejor actualizar self._neuronas de un golpe.
-            nuevas_neuronas.append(self.crear_neurona(incluir = False))
-            i += 1
-        self._neuronas.extend(nuevas_neuronas)
-        return nuevas_neuronas
+        # Se crean.
+        nn = [Neurona() for i in xrange(cantidad)]
+        # Se crea la referencia al núcleo en cada una.
+        for n in nn:
+            n.nucleo = self
+        # Se incluyen.
+        self._neuronas.extend(nn)
+        return nn
+
+    def crear_neuronas_de_entrada(self, cantidad):
+        """
+        Crear y devuelve una 'cantidad' de neuronas que actuarán como
+        entradas del núcleo.
+        """
+        nn = self.crear_neuronas(cantidad)
+        self._entradas.extend(nn)
+        return nn
+
+    def crear_neuronas_de_salida(self, cantidad):
+        """
+        Crear y devuelve una 'cantidad' de neuronas que actuarán como
+        salidas del núcleo.
+        """
+        nn = self.crear_neuronas(cantidad)
+        self._salidas.extend(nn)
+        return nn
 
     @property
     def neuronas(self):
