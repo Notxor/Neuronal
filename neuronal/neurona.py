@@ -36,10 +36,6 @@ class Neurona(Glioblasto):
         Glioblasto.__init__(self)
         self.vias_eferentes = set()
         self.vias_aferentes = set()
-        # Un diccionario indexador con todas, en cualquier sentido.
-        # ... Se carga en el constructor de Sinapsis.
-        # ... Con el índice tuple (activadora, receptora).
-        self.vias = {}
         self._reset()
         # Una neurona sólo puede pertenecer a una capa pero también puede actuar
         # de forma independiente como 'sensor' externo
