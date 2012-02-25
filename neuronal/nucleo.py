@@ -27,22 +27,20 @@ class Nucleo(Glioblasto):
       cantidad_de_neuronas_de_salida = 0
     ):
         Glioblasto.__init__(self)
-        self._neuronas = []
+        self._neuronas = [] # Todas, entradas+internas+salidas.
         self._entradas = []
+        self._internas = []
         self._salidas = []
         # Crear las neuronas internas.
-        self.crear_neuronas(cantidad_de_neuronas_internas)
+        self.crear_neuronas_internas(cantidad_de_neuronas_internas)
         # Crear las salidas.
         self.crear_neuronas_de_salida(cantidad_de_neuronas_de_salida)
 
-    def crear_neuronas(self, cantidad):
+    def _crear_neuronas(self, cantidad):
         """
-        Crea y devuelve una 'cantidad' de neuronas (en una lista), que
-        formarán parte del núcleo, como neuronas "internas" (las que no
-        son ni de entrada ni de salida).
-
-        Toda neurona que vaya a formar parte de un núcleo ha de crearse
-        con este método.
+        Toda neurona que vaya a formar parte de un núcleo ha utilizar
+        este método, aunque de forma indirecta, llamando a los métodos
+        públicos crear_neuronas*().
 
         Se le pone una referencia al núcleo en el miembro 'nucleo' de la
         neurona, para detectar si forma parte de un núcleo. Por ejemplo,
@@ -50,6 +48,8 @@ class Nucleo(Glioblasto):
         diccionario indexador 'vias' de núcleo.
         """
         # Se crean.
+        if cantidad == 0:
+            return []
         nn = [Neurona() for i in xrange(cantidad)]
         # Se crea la referencia al núcleo en cada una.
         for n in nn:
@@ -63,8 +63,18 @@ class Nucleo(Glioblasto):
         Crear y devuelve una 'cantidad' de neuronas que actuarán como
         entradas del núcleo.
         """
-        nn = self.crear_neuronas(cantidad)
+        nn = self._crear_neuronas(cantidad)
         self._entradas.extend(nn)
+        return nn
+
+    def crear_neuronas_internas(self, cantidad):
+        """
+        Crea y devuelve una 'cantidad' de neuronas (en una lista), que
+        formarán parte del núcleo, como neuronas "internas" (las que no
+        son ni de entrada ni de salida).
+        """
+        nn = self._crear_neuronas(cantidad)
+        self._internas.extend(nn)
         return nn
 
     def crear_neuronas_de_salida(self, cantidad):
@@ -72,7 +82,7 @@ class Nucleo(Glioblasto):
         Crear y devuelve una 'cantidad' de neuronas que actuarán como
         salidas del núcleo.
         """
-        nn = self.crear_neuronas(cantidad)
+        nn = self._crear_neuronas(cantidad)
         self._salidas.extend(nn)
         return nn
 

@@ -30,7 +30,7 @@ class TestsNucleo(unittest.TestCase):
 
 class TestCrearNeurona(TestsNucleo):
     def runTest(self):
-        n = self.nucleo.crear_neuronas(1)[0]
+        n = self.nucleo._crear_neuronas(1)[0]
         self.assertTrue(isinstance(n, neuronal.Neurona))
         # En la propiedad.
         self.assertEqual(len(self.nucleo.neuronas), 1)
@@ -41,7 +41,7 @@ class TestCrearNeurona(TestsNucleo):
 
 class TestCrearNeuronas(TestsNucleo):
     def runTest(self):
-        nn = self.nucleo.crear_neuronas(3)
+        nn = self.nucleo._crear_neuronas(3)
         self.assertEqual(len(nn), 3)
         self.assertEqual(len(self.nucleo.neuronas), 3)
         self.assertEqual(len(self.nucleo._neuronas), 3)
@@ -57,6 +57,21 @@ class TestCrearNeuronas(TestsNucleo):
         self.assertTrue(nn[1] in self.nucleo._neuronas)
         self.assertTrue(nn[2] in self.nucleo._neuronas)
 
+class TestCrearNeuronasEIS(TestsNucleo):
+    # EIS: Entradas, Internas, Salidas.
+    def runTest(self):
+        def do(cantidad, f_crear, destino, totales):
+            nn = f_crear(cantidad)
+            self.assertEqual(len(nn), cantidad)
+            self.assertEqual(len(destino), cantidad)
+            self.assertEqual(len(self.nucleo._neuronas), totales)
+        do(0, self.nucleo.crear_neuronas_de_entrada, self.nucleo._neuronas, 0)
+        do(0, self.nucleo.crear_neuronas_internas, self.nucleo._neuronas, 0)
+        do(0, self.nucleo.crear_neuronas_de_salida, self.nucleo._neuronas, 0)
+        do(3, self.nucleo.crear_neuronas_de_entrada, self.nucleo._entradas, 3)
+        do(4, self.nucleo.crear_neuronas_internas, self.nucleo._internas, 7)
+        do(2, self.nucleo.crear_neuronas_de_salida, self.nucleo._salidas, 9)
+
 class TestInterconectarNeuronasConNucleo(TestsNucleo):
     def runTest(self):
         vr = -1 * neuronal.Membrana.umbral # Valor de Reset.
@@ -65,14 +80,14 @@ class TestInterconectarNeuronasConNucleo(TestsNucleo):
         nB = neuronal.Neurona()
         # Sinapsis conectando con nueva neuronas de entrada creada ad-hoc
         s01 = nA.crear_sinapsis_saliente(
-          self.nucleo.crear_neuronas(1)[0],
+          self.nucleo.crear_neuronas_de_entrada(1)[0],
           1
         )
         # ... y obtenemos una referencia a la nueva neurona.
         nen1 = s01.neurona_receptora # nen: Neurona Entrada a Nucleo.
         # Método alternativo.
         # ... Creamos la neurona en el núcleo
-        nen2 = self.nucleo.crear_neuronas(1)[0]
+        nen2 = self.nucleo.crear_neuronas_de_entrada(1)[0]
         # ... y hacemos que sea la receptora otra.
         s02 = nB.crear_sinapsis_saliente(nen2, 2)
         # Estimulan correctamente.
