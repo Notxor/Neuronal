@@ -40,6 +40,8 @@ class Neurona(Glioblasto):
         # Una neurona sólo puede pertenecer a una capa pero también puede actuar
         # de forma independiente como 'sensor' externo
         #self.capa = None
+        # Funciones que serán llamadas tras determinados eventos.
+        self.callbacks = {'disparo': [], 'estimulo': []}
 
     def recibir_estimulo(self, valor):
         """
@@ -48,8 +50,25 @@ class Neurona(Glioblasto):
         Es recibido a través de una sinapsis tras haberse activado el
         elemento de la parte emisora, lo que nos define como parte
         receptora. (En concreto, lo ejecuta Sinapsis.estimular()).
+
+        Tras aplicar el estímulo se llama a las funciones callback
+        registradas en el hook "estimulo". Los datos que recibirán estas
+        funciones son: neurona (la que lo ha recibido), valor_previo,
+        estimulo (el valor del estímulo recibido) y acumulador (el valor
+        del acumulador tras el estímulo). Todos ellos en un diccionario.
         """
+        _pre = float(self.acumulador)
         self.acumulador += valor
+        _post = float(self.acumulador)
+        for callback in self.callbacks['estimulo']:
+            callback(
+              {
+                'neurona': self,
+                'valor_previo': _pre,
+                'estimulo': valor,
+                'acumulador': _post
+              }
+            )
 
     def esta_activa(self):
         """
@@ -71,9 +90,18 @@ class Neurona(Glioblasto):
         return se_disparara
 
     def _disparar(self):
-        """Estimula cada una de las vías eferentes."""
+        """
+        Estimula cada una de las vías eferentes.
+
+        Tras cada disparo se llama a las funciones callback registradas
+        en el hook "disparo". Los datos que recibirán estas funciones
+        son: neurona (la neurona disparada). Todos ellos en un
+        diccionario.
+        """
         for s in self.vias_eferentes:
             s.estimular()
+        for callback in self.callbacks['disparo']:
+            callback({'neurona': self})
 
     def _reset(self):
         """Ajusta el acumulador según el valor del umbral de la membrana."""
