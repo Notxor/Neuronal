@@ -107,24 +107,6 @@ class Nucleo(Glioblasto):
             """
             pass
 
-    def crear_neuronas_de_entrada(self, cantidad):
-        """
-        Crear y devuelve una 'cantidad' de neuronas que actuarán como
-        entradas del núcleo.
-        """
-        nn = self.crear_neuronas(cantidad)
-        self._entradas.extend(nn)
-        return nn
-
-    def crear_neuronas_de_salida(self, cantidad):
-        """
-        Crear y devuelve una 'cantidad' de neuronas que actuarán como
-        salidas del núcleo.
-        """
-        nn = self.crear_neuronas(cantidad)
-        self._salidas.extend(nn)
-        return nn
-
     def crear_sinapsis_al_azar(self, cantidad, minimo, maximo):
         """
         Crea una 'cantidad' de sinapsis al azar, con un peso entre 'minimo'
