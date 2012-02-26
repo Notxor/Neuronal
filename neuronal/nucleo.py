@@ -165,26 +165,67 @@ class Nucleo(Glioblasto):
             #print(peso)
             n1.crear_sinapsis_saliente(n2, peso)
 
-    def _dot_file_to_stdout(self):
-        def print_sub_arbol(root):
-            for s in root.vias_eferentes:
-                if root != s.neurona_activadora:
-                    print('BUG')
-                color = 'red' if s.peso <= 0 else 'green'
-                print('n%s -> n%s [weight=%s, penwidth=%s, color=%s];' % (
-                  id(root),
-                  id(s.neurona_receptora),
-                  abs(s.peso / 4), abs(s.peso / 4),
-                  color
-                  )
+    def _guardar_en_fichero_dot(self, f):
+        """
+        Se guarda el núcleo en formato dot de graphviz.
+
+        El único añadido respecto a la sintaxis oficial es que se utiliza
+        un parámetro __peso personalizado en las relaciones.
+        """
+        def _dot_node_def(label, color):
+            """Declaración de un nodo-neurona"""
+            return 'n%s [style=filled, color=%s];\n' % (label, color)
+
+        def _dot_rel_def(origen, destino, peso):
+            """Declaración de una relación-sinapsis."""
+            color = 'red' if peso <= 0.0 else 'green'
+            _s = 'n%s -> n%s '
+            _s += '['
+            _s += '__peso=%s, '
+            _s += 'weight=%s, penwidth=%s, '
+            _s += 'color=%s]'
+            _s += ';\n'
+            return _s % (
+              origen, destino,
+              float(peso),
+              abs(peso / 4.0), abs(peso / 4.0),
+              color
+            )
+
+        def _sinapsis_salientes(neurona):
+            """
+            Declaración de todas las sinapsis salientes de una neurona
+            """
+            _s = ''
+            for si in neurona.vias_eferentes:
+                if neurona != si.neurona_activadora:
+                    raise "Sinapsis con origen inesperado"
+                _s += _dot_rel_def(
+                  id(neurona),
+                  id(si.neurona_receptora),
+                  si.peso
                 )
-        print('digraph G{')
-        for i in self._neuronas:
-            color = '"#dddddd"'
-            if i in self._entradas:
-                color = '"#00dddd"'
-            elif i in self._salidas:
-                color = '"#ffdd22"'
-            print('n%s [style=filled, color=%s];' % (id(i), color))
-            print_sub_arbol(i)
-        print('}')
+            return _s
+        # Los grupos que se van a escribir en el dot.
+        # ... (lista, nombre, color).
+        clusters = [
+          (self._entradas, 'entradas', '"#00dddd"'),
+          (self._internas, 'internas', '"#dddddd"'),
+          (self._salidas, 'salidas', '"#ffdd22"')
+        ]
+        # Cabecera del dot, define el gráfico.
+        f.write('digraph Neuronal{\n')
+        # Subgráficos para cada uno de los grupos de neuronas.
+        for neuronas, cluster, color in clusters:
+            # Cabecera del grupo/cluster.
+            # ... (que el nombre empiece por 'cluster' es relevante).
+            f.write('subgraph cluster_%s {\n' % (cluster,))
+            for n in neuronas:
+                # La neurona,
+                f.write(_dot_node_def(id(n), color))
+                # ... y sus relaciones salientes.
+                f.write(_sinapsis_salientes(n))
+            # Cierre del grupo.
+            f.write('}\n')
+        # Cierre del dot.
+        f.write('}\n')
