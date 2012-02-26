@@ -94,6 +94,27 @@ class Nucleo(Glioblasto):
         """
         return self._neuronas
 
+    def estado(self):
+        """
+        Devuelve una cadena que representa el estado interno del núcleo.
+        """
+        # Las sinapsis entrantes, de las neuronas de entrada.
+        sinapsis_entrantes = []
+        aferentes = [e.vias_aferentes for e in self._entradas]
+        for via in aferentes:
+            sinapsis_entrantes.extend([v for v in via])
+        # Se va preparando la salida,
+        _s = ''
+        sep = ' / ' # Separador.
+        # ... Los pesos de las sinapsis de entrada,
+        _s = str([s.peso for s in sinapsis_entrantes]) + sep
+        # ... y los acumuladores de cada neurona entrada, interna y salida.
+        _s += 'E' + str([n.acumulador for n in self._entradas]) + sep
+        _s += 'I' + str([n.acumulador for n in self._internas]) + sep
+        _s += 'S' + str([n.acumulador for n in self._salidas])
+        # Hecho.
+        return _s
+
     def proceso(self, modo='ciclo', veces=1):
         """
         Esto es un buen candidato para ser sustituido por un planificador. El
