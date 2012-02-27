@@ -23,7 +23,8 @@ from nucleo import Nucleo
 
 class Serializador(object):
     """
-    Carga y guarda un núcleo en formato propio.
+    Carga y guarda un núcleo en formato propio. El formato es muy simple y
+    entendible por humanos.
     """
     def __init__(self, nucleo=None, nombre_fichero=None):
         self._nombre_fichero = nombre_fichero
@@ -33,6 +34,10 @@ class Serializador(object):
         self._sinapsis = []
 
     def cargar(self, nombre_fichero=None):
+        """
+        Carga la información contenida en nombre_fichero y devuelve un núcleo
+        formado a partir de dicha información.
+        """
         if nombre_fichero is not None:
             self._nombre_fichero = nombre_fichero
         if self._nucleo is None:
@@ -45,6 +50,10 @@ class Serializador(object):
         return self._nucleo
 
     def _establecer_sinapsis(self):
+        """
+        Crea las sinapsis entre las neuronas del núcleo según la información
+        contenida en el fichero.
+        """
         for l in self._sinapsis:
             cosas = l.strip().split(' ')
             self._neuronas[cosas[0]].crear_sinapsis_saliente(
@@ -52,6 +61,9 @@ class Serializador(object):
                                             float(cosas[2]))
 
     def _fichero_a_info(self):
+        """
+        Genera estructuras de datos paralelas con la información del fichero.
+        """
         cargando=''
         for l in self._lineas:
             l = l.strip()
@@ -75,6 +87,9 @@ class Serializador(object):
                 self._sinapsis.append(l)
 
     def _cargar_info_neurona(self, tipo, linea):
+        """
+        Crea una neurona del tipo dado con la información contenida en la linea.
+        """
         elementos = linea.split(' ')
         if tipo == 'E':
             neurona = self._nucleo.crear_neuronas_de_entrada(1)
@@ -86,6 +101,10 @@ class Serializador(object):
         self._neuronas[elementos[0]] = neurona[0]
 
     def guardar(self, nucleo=None):
+        """
+        Convierte un nucleo dado en un fichero de texto con la estructura del
+        mismo.
+        """
         if nucleo is not None:
             self._nucleo = nucleo
         if self._nombre_fichero is None:
