@@ -33,9 +33,9 @@ class Serializador(object):
         self._sinapsis = []
 
     def cargar(self, nombre_fichero=None):
-        if nombre_fichero != None:
+        if nombre_fichero is not None:
             self._nombre_fichero = nombre_fichero
-        if self._nucleo == None:
+        if self._nucleo is None:
             self._nucleo = Nucleo()
         f = file(self._nombre_fichero, "r")
         self._lineas = f.readlines()
@@ -86,9 +86,9 @@ class Serializador(object):
         self._neuronas[elementos[0]] = neurona[0]
 
     def guardar(self, nucleo=None):
-        if nucleo != None:
+        if nucleo is not None:
             self._nucleo = nucleo
-        if self._nombre_fichero == None:
+        if self._nombre_fichero is None:
             f = sys.stdout
         else:
             f = file(self._nombre_fichero, "w")
