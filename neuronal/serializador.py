@@ -29,9 +29,6 @@ class Serializador(object):
         self._nombre_fichero = nombre_fichero
         self._nucleo = nucleo
         self._lineas = []
-        self._entradas = {}
-        self._internas = {}
-        self._salidas  = {}
         self._neuronas = {}
         self._sinapsis = []
 
@@ -44,26 +41,8 @@ class Serializador(object):
         self._lineas = f.readlines()
         f.close()
         self._fichero_a_info()
-        self._nucleo.crear_neuronas_de_entrada(len(self._entradas))
-        self._nucleo.crear_neuronas_internas(len(self._internas))
-        self._nucleo.crear_neuronas_de_salida(len(self._salidas))
-        self._ajustar_neuronas()
         self._establecer_sinapsis()
         return self._nucleo
-
-    def _ajustar_neuronas(self):
-        keys = self._entradas.keys()
-        for i in range(len(keys)):
-            self._nucleo._entradas[i].acumulador = self._entradas[keys[i]]
-            self._neuronas[keys[i]] = self._nucleo._entradas[i]
-        keys = self._internas.keys()
-        for i in range(len(keys)):
-            self._nucleo._internas[i].acumulador = self._internas[keys[i]]
-            self._neuronas[keys[i]] = self._nucleo._internas[i]
-        keys = self._salidas.keys()
-        for i in range(len(keys)):
-            self._nucleo._salidas[i].acumulador = self._salidas[keys[i]]
-            self._neuronas[keys[i]] = self._nucleo._salidas[i]
 
     def _establecer_sinapsis(self):
         for l in self._sinapsis:
@@ -90,7 +69,7 @@ class Serializador(object):
             elif l.startswith('Sinapsis:'):
                 cargando = 'C'
                 continue
-            if cargando == 'E' or cargando == 'I' or cargando == 'S':
+            if cargando in ('E', 'I', 'S'):
                 self._cargar_info_neurona(tipo=cargando, linea=l)
             elif cargando == 'C':
                 self._sinapsis.append(l)
@@ -98,11 +77,13 @@ class Serializador(object):
     def _cargar_info_neurona(self, tipo, linea):
         elementos = linea.split(' ')
         if tipo == 'E':
-            self._entradas[elementos[0]] = float(elementos[1])
+            neurona = self._nucleo.crear_neuronas_de_entrada(1)
         elif tipo == 'I':
-            self._internas[elementos[0]] = float(elementos[1])
+            neurona = self._nucleo.crear_neuronas_internas(1)
         elif tipo == 'S':
-            self._salidas[elementos[0]] = float(elementos[1])
+            neurona = self._nucleo.crear_neuronas_de_salida(1)
+        neurona[-1].acumulador = elementos[1]
+        self._neuronas[elementos[0]] = neurona[-1]
 
     def guardar(self, nucleo=None):
         if nucleo != None:
