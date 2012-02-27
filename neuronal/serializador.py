@@ -82,8 +82,8 @@ class Serializador(object):
             neurona = self._nucleo.crear_neuronas_internas(1)
         elif tipo == 'S':
             neurona = self._nucleo.crear_neuronas_de_salida(1)
-        neurona[-1].acumulador = elementos[1]
-        self._neuronas[elementos[0]] = neurona[-1]
+        neurona[0].acumulador = elementos[1]
+        self._neuronas[elementos[0]] = neurona[0]
 
     def guardar(self, nucleo=None):
         if nucleo != None:
