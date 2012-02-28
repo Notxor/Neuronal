@@ -105,7 +105,15 @@ class Serializador(object):
         Convierte un nucleo dado en un fichero de texto con la estructura del
         mismo.
         """
-        neuronombres= {} # Diccionario de correspon. de nombres de neuronas
+        # Diccionario que correlaciona entre los id internos de la neuronas
+        # ... y los nuevos nombres asignados (más humanos y de numeración
+        # ... consecutiva). El índice serán los id y el contenido el
+        # ... nuevo nombre. Por lo tanto permite, dado un id, obtener
+        # ... rápidamente el nombre que se le asignó. Se utiliza cuando
+        # ... se están escribiendo las sinapsis, para enlazar correctamente
+        # ... a pesar de la reasignación de nombres. Se carga mientras se
+        # ... escriben las neuronas (por grupo).
+        neuronombres = {} # Diccionario "traductor".
         # Función para escribir un grupo de neuronas, que se encarga
         # ... también de ir rellenando el dato en el diccionario traductor
         # ... para todas las que va tratando.
@@ -121,8 +129,10 @@ class Serializador(object):
                         )
                 # Carga en el diccionario traductor.
                 neuronombres[id(n)] = nombre_neurona
+        #
         if nucleo is not None:
             self._nucleo = nucleo
+        # Si no se dió fichero de salida se usa stdout.
         if self._nombre_fichero is None:
             f = sys.stdout
         else:
@@ -132,6 +142,7 @@ class Serializador(object):
         escribe_grupo('entrada', self._nucleo._entradas, 'NE')
         escribe_grupo('internas', self._nucleo._internas, 'NI')
         escribe_grupo('salidas', self._nucleo._salidas, 'NS')
+        # Escritura de las sinapsis.
         f.write('Sinapsis:\n')
         for n in self._nucleo.neuronas:
             for s in n.vias_eferentes:
@@ -139,4 +150,5 @@ class Serializador(object):
                         neuronombres[id(s.neurona_activadora)] + ' ' +
                         neuronombres[id(s.neurona_receptora)] + ' ' +
                         str(float(s.peso)) + '\n')
+        # TO-DO, ¿Se puede/debe cerrar stdout?
         f.close()
