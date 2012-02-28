@@ -115,27 +115,27 @@ class Serializador(object):
         # Escritura directa al fichero o a la salida estándar.
         f.write('Neuronas:\n')
         f.write('    Entradas:\n')
-        for i in range(len(self._nucleo._entradas)):
+        for i, n in enumerate(self._nucleo._entradas):
             # Vale, sí, me gustan los índices negativos "tú nunca positifo" :-P
             nombre_neurona = 'NE' + ('0000' + str(i+1))[-4:]
             f.write('        ' + nombre_neurona + ' ' +
-                    str(float(self._nucleo._entradas[i].acumulador)) + '\n'
+                    str(float(n.acumulador)) + '\n'
                     )
-            neuronombres[id(self._nucleo._entradas[i])] = nombre_neurona
+            neuronombres[id(n)] = nombre_neurona
         f.write('    Internas:\n')
-        for i in range(len(self._nucleo._internas)):
+        for i, n in enumerate(self._nucleo._internas):
             nombre_neurona = 'NI' + ('0000' + str(i+1))[-4:]
             f.write('        ' + nombre_neurona + ' ' +
-                    str(float(self._nucleo._internas[i].acumulador)) + '\n'
+                    str(float(n.acumulador)) + '\n'
                     )
-            neuronombres[id(self._nucleo._internas[i])] = nombre_neurona
+            neuronombres[id(n)] = nombre_neurona
         f.write('    Salidas:\n')
-        for i in range(len(self._nucleo._salidas)):
+        for i, n in enumerate(self._nucleo._salidas):
             nombre_neurona = 'NS' + ('0000' + str(i+1))[-4:]
             f.write('        ' + nombre_neurona + ' ' +
-                    str(float(self._nucleo._salidas[i].acumulador)) + '\n'
+                    str(float(n.acumulador)) + '\n'
                     )
-            neuronombres[id(self._nucleo._salidas[i])] = nombre_neurona
+            neuronombres[id(n)] = nombre_neurona
         f.write('Sinapsis:\n')
         for n in self._nucleo.neuronas:
             for s in n.vias_eferentes:
