@@ -114,32 +114,33 @@ class Serializador(object):
             f = file(self._nombre_fichero, "w")
         # Escritura directa al fichero o a la salida estándar.
         f.write('Neuronas:\n')
-        f.write('    Entradas:\n')
+        f.write(' ' * 4 + 'Entradas:\n')
         for i, n in enumerate(self._nucleo._entradas):
             # Vale, sí, me gustan los índices negativos "tú nunca positifo" :-P
             nombre_neurona = 'NE' + ('0000' + str(i+1))[-4:]
-            f.write('        ' + nombre_neurona + ' ' +
+            f.write(' ' * 8 + nombre_neurona + ' ' +
                     str(float(n.acumulador)) + '\n'
                     )
             neuronombres[id(n)] = nombre_neurona
         f.write('    Internas:\n')
         for i, n in enumerate(self._nucleo._internas):
             nombre_neurona = 'NI' + ('0000' + str(i+1))[-4:]
-            f.write('        ' + nombre_neurona + ' ' +
+            f.write(' ' * 8 + nombre_neurona + ' ' +
                     str(float(n.acumulador)) + '\n'
                     )
             neuronombres[id(n)] = nombre_neurona
         f.write('    Salidas:\n')
         for i, n in enumerate(self._nucleo._salidas):
             nombre_neurona = 'NS' + ('0000' + str(i+1))[-4:]
-            f.write('        ' + nombre_neurona + ' ' +
+            f.write(' ' * 8 + nombre_neurona + ' ' +
                     str(float(n.acumulador)) + '\n'
                     )
             neuronombres[id(n)] = nombre_neurona
         f.write('Sinapsis:\n')
         for n in self._nucleo.neuronas:
             for s in n.vias_eferentes:
-                f.write('    ' + neuronombres[id(s.neurona_activadora)] + 
-                        ' '    + neuronombres[id(s.neurona_receptora)] +
-                        ' '    + str(float(s.peso)) + '\n')
+                f.write(' ' * 4 +
+                        neuronombres[id(s.neurona_activadora)] + ' ' +
+                        neuronombres[id(s.neurona_receptora)] + ' ' +
+                        str(float(s.peso)) + '\n')
         f.close()
