@@ -105,6 +105,7 @@ class Serializador(object):
         Convierte un nucleo dado en un fichero de texto con la estructura del
         mismo.
         """
+        neuronombres= {} # Diccionario de correspon. de nombres de neuronas
         if nucleo is not None:
             self._nucleo = nucleo
         if self._nombre_fichero is None:
@@ -114,18 +115,31 @@ class Serializador(object):
         # Escritura directa al fichero o a la salida estándar.
         f.write('Neuronas:\n')
         f.write('    Entradas:\n')
-        for n in self._nucleo._entradas:
-            f.write('        '+str(id(n))+' '+str(n.acumulador)+'\n')
+        for i in range(len(self._nucleo._entradas)):
+            # Vale, sí, me gustan los índices negativos "tú nunca positifo" :-P
+            nombre_neurona = 'NE' + ('0000' + str(i+1))[-4:]
+            f.write('        ' + nombre_neurona + ' ' +
+                    str(float(self._nucleo._entradas[i].acumulador)) + '\n'
+                    )
+            neuronombres[id(self._nucleo._entradas[i])] = nombre_neurona
         f.write('    Internas:\n')
-        for n in self._nucleo._internas:
-            f.write('        '+str(id(n))+' '+str(n.acumulador)+'\n')
+        for i in range(len(self._nucleo._internas)):
+            nombre_neurona = 'NI' + ('0000' + str(i+1))[-4:]
+            f.write('        ' + nombre_neurona + ' ' +
+                    str(float(self._nucleo._internas[i].acumulador)) + '\n'
+                    )
+            neuronombres[id(self._nucleo._internas[i])] = nombre_neurona
         f.write('    Salidas:\n')
-        for n in self._nucleo._salidas:
-            f.write('        '+str(id(n))+' '+str(n.acumulador)+'\n')
+        for i in range(len(self._nucleo._salidas)):
+            nombre_neurona = 'NS' + ('0000' + str(i+1))[-4:]
+            f.write('        ' + nombre_neurona + ' ' +
+                    str(float(self._nucleo._salidas[i].acumulador)) + '\n'
+                    )
+            neuronombres[id(self._nucleo._salidas[i])] = nombre_neurona
         f.write('Sinapsis:\n')
         for n in self._nucleo.neuronas:
             for s in n.vias_eferentes:
-                f.write('    ' + str(id(s.neurona_activadora)) + 
-                        ' '    + str(id(s.neurona_receptora)) +
+                f.write('    ' + neuronombres[id(s.neurona_activadora)] + 
+                        ' '    + neuronombres[id(s.neurona_receptora)] +
                         ' '    + str(float(s.peso)) + '\n')
         f.close()
