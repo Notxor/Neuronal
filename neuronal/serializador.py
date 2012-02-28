@@ -106,36 +106,32 @@ class Serializador(object):
         mismo.
         """
         neuronombres= {} # Diccionario de correspon. de nombres de neuronas
+        # Función para escribir un grupo de neuronas, que se encarga
+        # ... también de ir rellenando el dato en el diccionario traductor
+        # ... para todas las que va tratando.
+        def escribe_grupo(nombre_grupo, lista_neuronas, prefijo):
+            # Cabecera de grupo.
+            f.write(' ' * 4 + nombre_grupo.capitalize() + ':\n')
+            # Cada una de las neuronas de la lista que forma el grupo.
+            for i, n in enumerate(lista_neuronas):
+                # TO-DO, eliminar limitación de 9999.
+                nombre_neurona = prefijo + ('0000' + str(i+1))[-4:]
+                f.write(' ' * 8 + nombre_neurona + ' ' +
+                        str(float(n.acumulador)) + '\n'
+                        )
+                # Carga en el diccionario traductor.
+                neuronombres[id(n)] = nombre_neurona
         if nucleo is not None:
             self._nucleo = nucleo
         if self._nombre_fichero is None:
             f = sys.stdout
         else:
             f = file(self._nombre_fichero, "w")
-        # Escritura directa al fichero o a la salida estándar.
+        # Escritura de las neuronas.
         f.write('Neuronas:\n')
-        f.write(' ' * 4 + 'Entradas:\n')
-        for i, n in enumerate(self._nucleo._entradas):
-            # Vale, sí, me gustan los índices negativos "tú nunca positifo" :-P
-            nombre_neurona = 'NE' + ('0000' + str(i+1))[-4:]
-            f.write(' ' * 8 + nombre_neurona + ' ' +
-                    str(float(n.acumulador)) + '\n'
-                    )
-            neuronombres[id(n)] = nombre_neurona
-        f.write('    Internas:\n')
-        for i, n in enumerate(self._nucleo._internas):
-            nombre_neurona = 'NI' + ('0000' + str(i+1))[-4:]
-            f.write(' ' * 8 + nombre_neurona + ' ' +
-                    str(float(n.acumulador)) + '\n'
-                    )
-            neuronombres[id(n)] = nombre_neurona
-        f.write('    Salidas:\n')
-        for i, n in enumerate(self._nucleo._salidas):
-            nombre_neurona = 'NS' + ('0000' + str(i+1))[-4:]
-            f.write(' ' * 8 + nombre_neurona + ' ' +
-                    str(float(n.acumulador)) + '\n'
-                    )
-            neuronombres[id(n)] = nombre_neurona
+        escribe_grupo('entrada', self._nucleo._entradas, 'NE')
+        escribe_grupo('internas', self._nucleo._internas, 'NI')
+        escribe_grupo('salidas', self._nucleo._salidas, 'NS')
         f.write('Sinapsis:\n')
         for n in self._nucleo.neuronas:
             for s in n.vias_eferentes:
