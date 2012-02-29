@@ -26,8 +26,9 @@ class Serializador(object):
     Carga y guarda un núcleo en formato propio. El formato es muy simple y
     entendible por humanos.
     """
-    def __init__(self, nucleo=None):
-        self._nucleo = nucleo
+    def __init__(self):
+        # TO-DO resetear estructuras entre llamadas a cargar o guardar,
+        # ... si no se hace, se mezclarán datos.
         self._lineas = []
         self._neuronas = {}
         self._sinapsis = []
@@ -37,12 +38,11 @@ class Serializador(object):
         Carga la información contenida en el fichero abierto 'f' y
         devuelve un núcleo formado a partir de dicha información.
         """
-        if self._nucleo is None:
-            self._nucleo = Nucleo()
+        _nucleo = Nucleo()
         self._lineas = f.readlines()
-        self._fichero_a_info()
+        self._fichero_a_info(_nucleo)
         self._establecer_sinapsis()
-        return self._nucleo
+        return _nucleo
 
     def _establecer_sinapsis(self):
         """
@@ -55,7 +55,7 @@ class Serializador(object):
                                             self._neuronas[cosas[1]],
                                             float(cosas[2]))
 
-    def _fichero_a_info(self):
+    def _fichero_a_info(self, nucleo):
         """
         Genera estructuras de datos paralelas con la información del fichero.
         """
@@ -77,30 +77,30 @@ class Serializador(object):
                 cargando = 'C'
                 continue
             if cargando in ('E', 'I', 'S'):
-                self._cargar_info_neurona(tipo=cargando, linea=l)
+                self._cargar_info_neurona(
+                  tipo=cargando, linea=l, nucleo = nucleo)
             elif cargando == 'C':
                 self._sinapsis.append(l)
 
-    def _cargar_info_neurona(self, tipo, linea):
+    def _cargar_info_neurona(self, tipo, linea, nucleo):
         """
         Crea una neurona del tipo dado con la información contenida en la linea.
         """
         elementos = linea.split(' ')
         if tipo == 'E':
-            neurona = self._nucleo.crear_neuronas_de_entrada(1)
+            neurona = nucleo.crear_neuronas_de_entrada(1)
         elif tipo == 'I':
-            neurona = self._nucleo.crear_neuronas_internas(1)
+            neurona = nucleo.crear_neuronas_internas(1)
         elif tipo == 'S':
-            neurona = self._nucleo.crear_neuronas_de_salida(1)
+            neurona = nucleo.crear_neuronas_de_salida(1)
         neurona[0].acumulador = elementos[1]
         self._neuronas[elementos[0]] = neurona[0]
 
-    def guardar(self, nucleo=None, f = None):
+    def guardar(self, nucleo, f):
         """
         Escribe en el archivo abierto 'f' una representación
         serializada de la estructura del 'nucleo' (neuronas y sinapsis).
         """
-        # TO-DO, ambos parámetros deben ser obligatorios.
         # Diccionario que correlaciona entre los id internos de la neuronas
         # ... y los nuevos nombres asignados (más humanos y de numeración
         # ... consecutiva). El índice serán los id y el contenido el
@@ -126,16 +126,14 @@ class Serializador(object):
                 # Carga en el diccionario traductor.
                 neuronombres[id(n)] = nombre_neurona
         #
-        if nucleo is not None:
-            self._nucleo = nucleo
         # Escritura de las neuronas.
         f.write('Neuronas:\n')
-        escribe_grupo('entradas', self._nucleo._entradas, 'NE')
-        escribe_grupo('internas', self._nucleo._internas, 'NI')
-        escribe_grupo('salidas', self._nucleo._salidas, 'NS')
+        escribe_grupo('entradas', nucleo._entradas, 'NE')
+        escribe_grupo('internas', nucleo._internas, 'NI')
+        escribe_grupo('salidas', nucleo._salidas, 'NS')
         # Escritura de las sinapsis.
         f.write('Sinapsis:\n')
-        for n in self._nucleo.neuronas:
+        for n in nucleo.neuronas:
             for s in n.vias_eferentes:
                 f.write(' ' * 4 +
                         neuronombres[id(s.neurona_activadora)] + ' ' +
