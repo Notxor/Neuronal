@@ -139,7 +139,7 @@ class Serializador(object):
             f = file(self._nombre_fichero, "w")
         # Escritura de las neuronas.
         f.write('Neuronas:\n')
-        escribe_grupo('entrada', self._nucleo._entradas, 'NE')
+        escribe_grupo('entradas', self._nucleo._entradas, 'NE')
         escribe_grupo('internas', self._nucleo._internas, 'NI')
         escribe_grupo('salidas', self._nucleo._salidas, 'NS')
         # Escritura de las sinapsis.
