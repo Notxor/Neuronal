@@ -29,7 +29,6 @@ class Serializador(object):
     def __init__(self):
         # TO-DO resetear estructuras entre llamadas a cargar o guardar,
         # ... si no se hace, se mezclarán datos.
-        self._lineas = []
         self._neuronas = {}
         self._sinapsis = []
 
@@ -39,9 +38,12 @@ class Serializador(object):
         devuelve un núcleo formado a partir de dicha información.
         """
         _nucleo = Nucleo()
-        self._lineas = f.readlines()
-        self._fichero_a_info(_nucleo)
-        self._establecer_sinapsis()
+        _lineas = f.readlines()
+        # TO-DO, _fichero_a_info() no debería hacer más de lo que parece
+        # ... dado el nombre de la función.
+        self._fichero_a_info(_lineas, _nucleo) # También carga en el nuevo
+                                               # ... nucleo las neuronas.
+        self._establecer_sinapsis() # Carga _neuronas en el nuevo nucleo.
         return _nucleo
 
     def _establecer_sinapsis(self):
@@ -55,12 +57,12 @@ class Serializador(object):
                                             self._neuronas[cosas[1]],
                                             float(cosas[2]))
 
-    def _fichero_a_info(self, nucleo):
+    def _fichero_a_info(self, lineas, nucleo):
         """
         Genera estructuras de datos paralelas con la información del fichero.
         """
         cargando=''
-        for l in self._lineas:
+        for l in lineas:
             l = l.strip()
             if l.startswith('#') or l == '':
                 continue
