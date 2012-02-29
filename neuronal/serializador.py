@@ -26,25 +26,20 @@ class Serializador(object):
     Carga y guarda un núcleo en formato propio. El formato es muy simple y
     entendible por humanos.
     """
-    def __init__(self, nucleo=None, nombre_fichero=None):
-        self._nombre_fichero = nombre_fichero
+    def __init__(self, nucleo=None):
         self._nucleo = nucleo
         self._lineas = []
         self._neuronas = {}
         self._sinapsis = []
 
-    def cargar(self, nombre_fichero=None):
+    def cargar(self, f):
         """
-        Carga la información contenida en nombre_fichero y devuelve un núcleo
-        formado a partir de dicha información.
+        Carga la información contenida en el fichero abierto 'f' y
+        devuelve un núcleo formado a partir de dicha información.
         """
-        if nombre_fichero is not None:
-            self._nombre_fichero = nombre_fichero
         if self._nucleo is None:
             self._nucleo = Nucleo()
-        f = file(self._nombre_fichero, "r")
         self._lineas = f.readlines()
-        f.close()
         self._fichero_a_info()
         self._establecer_sinapsis()
         return self._nucleo
@@ -100,11 +95,12 @@ class Serializador(object):
         neurona[0].acumulador = elementos[1]
         self._neuronas[elementos[0]] = neurona[0]
 
-    def guardar(self, nucleo=None):
+    def guardar(self, nucleo=None, f = None):
         """
-        Convierte un nucleo dado en un fichero de texto con la estructura del
-        mismo.
+        Escribe en el archivo abierto 'f' una representación
+        serializada de la estructura del 'nucleo' (neuronas y sinapsis).
         """
+        # TO-DO, ambos parámetros deben ser obligatorios.
         # Diccionario que correlaciona entre los id internos de la neuronas
         # ... y los nuevos nombres asignados (más humanos y de numeración
         # ... consecutiva). El índice serán los id y el contenido el
@@ -132,11 +128,6 @@ class Serializador(object):
         #
         if nucleo is not None:
             self._nucleo = nucleo
-        # Si no se dió fichero de salida se usa stdout.
-        if self._nombre_fichero is None:
-            f = sys.stdout
-        else:
-            f = file(self._nombre_fichero, "w")
         # Escritura de las neuronas.
         f.write('Neuronas:\n')
         escribe_grupo('entradas', self._nucleo._entradas, 'NE')
@@ -150,5 +141,3 @@ class Serializador(object):
                         neuronombres[id(s.neurona_activadora)] + ' ' +
                         neuronombres[id(s.neurona_receptora)] + ' ' +
                         str(float(s.peso)) + '\n')
-        # TO-DO, ¿Se puede/debe cerrar stdout?
-        f.close()
