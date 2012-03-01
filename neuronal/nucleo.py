@@ -182,12 +182,14 @@ class Nucleo(Glioblasto):
             _s = 'n%s -> n%s '
             _s += '['
             _s += '__peso=%s, '
+            _s += 'label=%s, '
             _s += 'weight=%s, penwidth=%s, '
             _s += 'color=%s]'
             _s += ';\n'
             return _s % (
               origen, destino,
               float(peso),
+              int(float(peso)*10)/10.0,
               abs(peso / 4.0), abs(peso / 4.0),
               color
             )
