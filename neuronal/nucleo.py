@@ -201,8 +201,8 @@ class Nucleo(Glioblasto):
                 if neurona != si.neurona_activadora:
                     raise "Sinapsis con origen inesperado"
                 _s += _dot_rel_def(
-                  id(neurona),
-                  id(si.neurona_receptora),
+                  humano_de[id(neurona)],
+                  humano_de[id(si.neurona_receptora)],
                   si.peso
                 )
             return _s
@@ -213,6 +213,7 @@ class Nucleo(Glioblasto):
           (self._internas, 'internas', '"#dddddd"'),
           (self._salidas, 'salidas', '"#ffdd22"')
         ]
+        humano_de = {} # Traducción por índice a numeración consecutiva.
         # Cabecera del dot, define el gráfico.
         f.write('digraph Neuronal{\n')
         # Subgráficos para cada uno de los grupos de neuronas.
@@ -220,12 +221,18 @@ class Nucleo(Glioblasto):
             # Cabecera del grupo/cluster.
             # ... (que el nombre empiece por 'cluster' es relevante).
             f.write('subgraph cluster_%s {\n' % (cluster,))
-            for n in neuronas:
-                # La neurona,
-                f.write(_dot_node_def(id(n), color))
-                # ... y sus relaciones salientes.
-                f.write(_sinapsis_salientes(n))
+            for i, n in enumerate(neuronas):
+                # Obtener un nuevo nombre para la neurona.
+                id_humano = str(cluster[0]) + str(i)
+                # Guardar información para traduccir las sinapsis.
+                humano_de[id(n)] = id_humano
+                # Escribimos la neurona.
+                f.write(_dot_node_def(id_humano, color))
             # Cierre del grupo.
             f.write('}\n')
+        # Tras los grupos, escribir las sinapsis.
+        for lista_neuronas in [cluster[0] for cluster in clusters]:
+            for n in lista_neuronas:
+                f.write(_sinapsis_salientes(n))
         # Cierre del dot.
         f.write('}\n')
