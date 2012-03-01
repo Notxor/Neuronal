@@ -128,13 +128,23 @@ class Nucleo(Glioblasto):
             Intenta disparos en las neuronas de entrada, las internas y
             la de salida, en ese orden.
 
+            Devuelve una lista con los acumuladores de las salidas justo
+            en el momento antes de intentar el disparo.
+
             Supongo que una 'compreensión de lista' (list comprehension) será
             más rápida que un bucle... siguiendo la programación funcional. Lo
             que hace es recorrer todas las neuronas disparándolas.
             """
             [n.intentar_disparo() for n in self._entradas]
             [n.intentar_disparo() for n in self._internas]
+            # OJO, esta forma de obtener los acumuladores de las salidas,
+            # ... para conocerlos antes de los reset() de los disparos,
+            # ... OBLIGA a que ninguna salida haga sinapsis con ninguna
+            # ... otra, ni consigo misma.
+            acumuladores_de_salidas = [salida.acumulador
+              for salida in self._salidas]
             [n.intentar_disparo() for n in self._salidas]
+            return acumuladores_de_salidas
         elif(modo == 'debug'):
             """
             El modo 'debug' aún no hace nada, pero lo que debe hacer es disparar
