@@ -62,7 +62,10 @@ class Sinapsis(object):
 
     def estimular(self):
         """Estimula la neurona receptora."""
-        self.neurona_receptora.recibir_estimulo(self.peso)
+        self.neurona_receptora.recibir_estimulo(
+          float(self.peso),
+          self
+        )
 
     def reforzar(self, peso = None):
         if peso is None:

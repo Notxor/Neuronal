@@ -43,30 +43,33 @@ class Neurona(Glioblasto):
         # Funciones que serán llamadas tras determinados eventos.
         self.callbacks = {'disparo': [], 'estimulo': []}
 
-    def recibir_estimulo(self, valor):
+    def recibir_estimulo(self, valor, sinapsis = None):
         """
         Actualiza acumulador, sumándole 'valor'.
 
-        Es recibido a través de una sinapsis tras haberse activado el
+        Es recibido a través de la 'sinapsis' tras haberse activado el
         elemento de la parte emisora, lo que nos define como parte
         receptora. (En concreto, lo ejecuta Sinapsis.estimular()).
 
         Tras aplicar el estímulo se llama a las funciones callback
         registradas en el hook "estimulo". Los datos que recibirán estas
         funciones son: neurona (la que lo ha recibido), valor_previo,
-        estimulo (el valor del estímulo recibido) y acumulador (el valor
-        del acumulador tras el estímulo). Todos ellos en un diccionario.
+        estimulo (el valor del estímulo recibido), acumulador (el valor
+        del acumulador tras el estímulo) y sinapsis (por la que llegó el
+        estímulo). Todos ellos en un diccionario.
         """
         _pre = float(self.acumulador)
         self.acumulador += valor
         _post = float(self.acumulador)
         for callback in self.callbacks['estimulo']:
+            # TO-DO, preparar el diccionario fuera del bucle.
             callback(
               {
                 'neurona': self,
                 'valor_previo': _pre,
                 'estimulo': valor,
-                'acumulador': _post
+                'acumulador': _post,
+                'sinapsis': sinapsis
               }
             )
 
