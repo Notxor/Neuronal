@@ -58,6 +58,8 @@ class NeuroPerceptor(object):
             self.sensores[i].crear_sinapsis_saliente(remotas[i])
         # Guardamos una referencia a la red.
         self._red = red
+        # Y una referencia en la red a su neuroperceptor.
+        red.neuroperceptor = self
 
     def recibir_sensacion_externa(self, informacion):
         """
