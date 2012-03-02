@@ -31,6 +31,7 @@ class Nucleo(Glioblasto):
         self._entradas = []
         self._internas = []
         self._salidas = []
+        self.neuroperceptor = None # Se carga al conectarlo.
         # Crear las neuronas internas.
         self.crear_neuronas_internas(cantidad_de_neuronas_internas)
         # Crear las salidas.
