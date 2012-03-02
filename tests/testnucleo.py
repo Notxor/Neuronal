@@ -143,7 +143,3 @@ class TestCrearSinapsisAlAzar(TestsNucleo):
           min_peso_sinapsis,
           max_peso_sinapsis
         )
-        if False:
-            f = open('test_nucleo.dot', 'w')
-            nucleo._guardar_en_fichero_dot(f)
-            f.close()

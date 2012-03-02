@@ -176,7 +176,11 @@ class Nucleo(Glioblasto):
             #print(peso)
             n1.crear_sinapsis_saliente(n2, peso)
 
-    def _guardar_en_fichero_dot(self, f):
+class SerializadorDot(object):
+    def __init__(self):
+        pass
+
+    def dump(self, nucleo, f):
         """
         Se guarda el núcleo en formato dot de graphviz.
 
@@ -207,7 +211,7 @@ class Nucleo(Glioblasto):
 
         def _sinapsis_salientes(neurona):
             """
-            Declaración de todas las sinapsis salientes de una neurona
+            Declaración de todas las sinapsis salientes de una neurona.
             """
             _s = ''
             for si in neurona.vias_eferentes:
@@ -222,9 +226,9 @@ class Nucleo(Glioblasto):
         # Los grupos que se van a escribir en el dot.
         # ... (lista, nombre, color).
         clusters = [
-          (self._entradas, 'entradas', '"#00dddd"'),
-          (self._internas, 'internas', '"#dddddd"'),
-          (self._salidas, 'salidas', '"#ffdd22"')
+          (nucleo._entradas, 'entradas', '"#00dddd"'),
+          (nucleo._internas, 'internas', '"#dddddd"'),
+          (nucleo._salidas, 'salidas', '"#ffdd22"')
         ]
         humano_de = {} # Traducción por índice a numeración consecutiva.
         # Cabecera del dot, define el gráfico.
