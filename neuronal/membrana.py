@@ -19,8 +19,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class Membrana(object):
-    """Sólo tiene dos valores estáticos. Uno es el umbral que simula el potencial
-    de acción de la membrana neuronal y otro es el valor que si se supera
-    hace que la membrana pierda su conductividad."""
-    umbral = 90
-    bloqueo = 200
+    """
+    Modela simplificadamente una membrana neuronal.
+
+    'umbral' simula el potencial de acción de la membrana neuronal
+    y 'bloqueo' indica el punto a partir del cual la membrana pierde su
+    conductividad.
+
+    Ambos parámetros son valores estáticos de la clase.
+
+    Proporciona un método de clase 'activa' que permite, dado un
+    'potencial' cualquiera en una neurona, saber si la membrana
+    estaría activa. Devuelve un booleano.
+    """
+    umbral = 90.0
+    bloqueo = 200.0
+    @classmethod
+    def activa(cls, potencial):
+        _potencial = float(potencial)
+        return (_potencial >= 0.0 and _potencial < cls.bloqueo)

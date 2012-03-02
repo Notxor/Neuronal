@@ -75,8 +75,7 @@ class Neurona(Glioblasto):
         Está activa si se ha sobrepasado el umbral de la membrana
         y no se ha llegado al valor de bloqueo.
         """
-        _acumulador = float(self.acumulador)
-        return (_acumulador >= 0 and _acumulador < Membrana.bloqueo)
+        return Membrana.activa(float(self.acumulador))
 
     def intentar_disparo(self):
         """
