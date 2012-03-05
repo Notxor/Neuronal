@@ -184,12 +184,15 @@ class SerializadorDot(object):
         """
         Se guarda el núcleo en formato dot de graphviz.
 
-        El único añadido respecto a la sintaxis oficial es que se utiliza
-        un parámetro __peso personalizado en las relaciones.
+        Se incluyen dos atributos "privados", sin significado para el
+        formato dot, pero que permiten guardar información propia del
+        nucleo: __peso de una sinapsis y __acumulador de
+        una neurona.
         """
-        def _dot_node_def(label, color):
+        def _dot_node_def(label, color, acumulador):
             """Declaración de un nodo-neurona"""
-            return 'n%s [style=filled, color=%s];\n' % (label, color)
+            return 'n%s [__acumulador=%s, style=filled, color=%s];\n' % (
+              label, acumulador, color)
 
         def _dot_rel_def(origen, destino, peso):
             """Declaración de una relación-sinapsis."""
@@ -244,7 +247,7 @@ class SerializadorDot(object):
                 # Guardar información para traduccir las sinapsis.
                 humano_de[id(n)] = id_humano
                 # Escribimos la neurona.
-                f.write(_dot_node_def(id_humano, color))
+                f.write(_dot_node_def(id_humano, color, n.acumulador))
             # Cierre del grupo.
             f.write('}\n')
         # Tras los grupos, escribir las sinapsis.
