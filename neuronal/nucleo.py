@@ -211,7 +211,7 @@ class SerializadorDot(object):
               origen, destino,
               float(peso),
               int(float(peso)*10)/10.0,
-              abs(peso / 4.0), abs(peso / 4.0),
+              abs(peso / 100)+1, abs(peso / 100)+1,
               color
             )
 
