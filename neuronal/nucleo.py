@@ -116,7 +116,7 @@ class Nucleo(Glioblasto):
         # Hecho.
         return _s
 
-    def proceso(self, modo='ciclo', veces=1):
+    def proceso(self, modo = None, veces=1):
         """
         Esto es un buen candidato para ser sustituido por un planificador. El
         caso es que habría que tener mirar la utilización de threads. Pero los
@@ -124,7 +124,9 @@ class Nucleo(Glioblasto):
         Lock), cuyo acrónimo no es un diminutivo, que hace que sólo un hilo sea
         ejecutado a la vez... así que no se adelanta mucho.
         """
-        if (modo == 'ciclo'):
+        if modo is None:
+            modo = 'ciclo'
+        if modo == 'ciclo':
             """
             Intenta disparos en las neuronas de entrada, las internas y
             la de salida, en ese orden.
