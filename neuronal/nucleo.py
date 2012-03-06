@@ -139,7 +139,8 @@ class Nucleo(Glioblasto):
             que hace es recorrer todas las neuronas disparándolas.
             """
             [n.intentar_disparo() for n in self._entradas]
-            [n.intentar_disparo() for n in self._internas]
+            for i in xrange(veces):
+                [n.intentar_disparo() for n in self._internas]
             # OJO, esta forma de obtener los acumuladores de las salidas,
             # ... para conocerlos antes de los reset() de los disparos,
             # ... OBLIGA a que ninguna salida haga sinapsis con ninguna
