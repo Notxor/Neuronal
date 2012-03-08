@@ -34,6 +34,7 @@ class Membrana(object):
     """
     umbral = 90.0
     bloqueo = 200.0
+    valor_de_reset = float(-1.0 * umbral)
     @classmethod
     def activa(cls, potencial):
         _potencial = float(potencial)

@@ -107,4 +107,4 @@ class Neurona(Glioblasto):
 
     def _reset(self):
         """Ajusta el acumulador según el valor del umbral de la membrana."""
-        self.acumulador = float(-1 * Membrana.umbral)
+        self.acumulador = Membrana.valor_de_reset

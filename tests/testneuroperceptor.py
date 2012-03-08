@@ -54,7 +54,7 @@ class TestEnviarSensacion(TestsNeuroperceptor):
         neuroperceptor.recibir_sensacion_externa((1, 2, 4))
         neuroperceptor.enviar_estimulos()
         # Valor de partida del acumulador en las neuronas.
-        a0 = float(-1 * neuronal.Membrana.umbral)
+        a0 = neuronal.Membrana.valor_de_reset
         # Los acumuladores de las neuronas receptoras han reaccionado
         # ... a los estímulos.
         self.assertEqual(

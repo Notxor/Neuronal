@@ -75,7 +75,7 @@ class TestCrearNeuronasEIS(TestsNucleo):
 
 class TestInterconectarNeuronasConNucleo(TestsNucleo):
     def runTest(self):
-        vr = -1 * neuronal.Membrana.umbral # Valor de Reset.
+        vr = neuronal.Membrana.valor_de_reset
         # Las neuronas externas.
         nA = neuronal.Neurona()
         nB = neuronal.Neurona()
