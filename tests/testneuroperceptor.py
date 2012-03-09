@@ -45,7 +45,7 @@ class TestCrearSentidoMasConectar(TestsNeuroperceptor):
     def runTest(self):
         neuroperceptor = neuronal.NeuroPerceptor(4)
         self.assertTrue(isinstance(neuroperceptor, neuronal.NeuroPerceptor))
-        neuroperceptor._conectar_a_red_receptora(self.nucleo)
+        neuroperceptor.crear_neuronas_entrada_y_conectar(self.nucleo)
         self.assertEqual(neuroperceptor._red, self.nucleo)
 
 class TestEnviarSensacion(TestsNeuroperceptor):

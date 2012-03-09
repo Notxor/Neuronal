@@ -28,11 +28,39 @@ class _Perceptor(Glioblasto):
         self.neuroperceptor = neuroperceptor
 
 class NeuroPerceptor(object):
-    """Conjunto de sensores. Proporciona datos de entrada a una red."""
+    """
+    Conjunto de sensores que, conectados a las entradas de una red,
+    proporciona estímulos entrantes.
+
+    Atributos:
+
+        sensores
+        _red
+
+    Métodos:
+
+      - Para la creación e interconexión:
+
+        __init__(self, cantidad_de_sensores, red = None)
+        conectar_a_entradas(self, red, entradas = None)
+        crear_neuronas_entrada_y_conectar(self, red)
+
+        Si se utiliza el parámetro 'red' del constructor, las neuronas
+        y las conexiones se crearían automáticamente. No enviándolo se
+        puede hacer el proceso con los otros dos métodos, usando uno u
+        otro dependiendo de si están ya creadas las neuronas o si se
+        desean crear en destino.
+
+      - Para manejar la sensación y enviarla:
+
+        recibir_sensacion_externa(self, sensacion)
+        enviar_estimulos(self)
+    """
     def __init__(self, cantidad_de_sensores, red = None):
         """
-        Los sensores son una lista inmutable (tuple), por lo tanto no
-        cambian a lo largo de la vida del neuroperceptor.
+        Lo crea con una 'cantidad_de_sensores' (inmutables). Si se pasa
+        una 'red', se crearían neuronas de entrada en ella, y se
+        conectarían los sensores a ellas mediante sinapsis.
         """
         self.sensores = tuple(
           _Perceptor(self) for i in xrange(cantidad_de_sensores)
@@ -40,38 +68,55 @@ class NeuroPerceptor(object):
 
         self._red = None
         if red is not None:
-            self._conectar_a_red_receptora(red)
+            self.crear_neuronas_entrada_y_conectar(red)
 
-    def _conectar_a_red_receptora(self, red):
+    def conectar_a_entradas(self, red, entradas = None):
         """
-        Crea y conecta neuronas de entrada en el 'nucleo', tantas como sensores
-        haya en el neuroperceptor, mediante sinapsis sensor->neurona. Es
-        conveniente que dichas neuronas sean las que inician la lista de
-        neuronas del núcleo. El objetivo es que sean disparadas al inicio del
-        'ciclo' para reducir el número de pasadas que habrá que darle al núcleo.
+        Conecta con las 'entradas' de la 'red', permitiendo que los
+        estímulos lleguen mediante enviar_estimulos() a las neuronas
+        de entrada asociadas.
+
+        Si no se pasa la secuencia de 'entradas', se utilizarían como
+        destino la "red._entradas".
         """
-        n_conexiones = len(self.sensores)
-        # Crear neuronas en el destino, que serviran de receptoras.
-        remotas = red.crear_neuronas_de_entrada(n_conexiones)
+        if entradas is None:
+            entradas = red._entradas
         # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
-        for i in xrange(n_conexiones):
-            self.sensores[i].crear_sinapsis_saliente(remotas[i])
-        # Guardamos una referencia a la red.
+        for i in xrange(len(self.sensores)):
+            self.sensores[i].crear_sinapsis_saliente(entradas[i])
+        # Se guarda una referencia a la red.
         self._red = red
         # Y una referencia en la red a su neuroperceptor.
         red.neuroperceptor = self
 
-    def recibir_sensacion_externa(self, informacion):
+    def crear_neuronas_entrada_y_conectar(self, red):
         """
-        Permite cargar de un golpe los valores en los sensores.
+        Crea neuronas de entrada en la 'red', tantas como sensores haya
+        en este neuroperceptor. Mediante sinapsis sensor->neurona el
+        neuroperceptor queda conectado a la 'red'.
+
+        Devuelve la secuencia de neuronas recién creadas.
         """
-        for i, x in enumerate(informacion):
+        n_conexiones = len(self.sensores)
+        # Crear neuronas en el destino, que servirán de receptoras.
+        remotas = red.crear_neuronas_de_entrada(n_conexiones)
+        self.conectar_a_entradas(red, remotas)
+        return remotas
+
+    def recibir_sensacion_externa(self, sensacion):
+        """
+        Carga de un golpe la 'sensacion' en los sensores. 'sensacion' es
+        una secuencia con tantos elementos como sensores haya en
+        el neuroperceptor.
+        """
+        for i, x in enumerate(sensacion):
             for sinapsis in self.sensores[i].vias.values():
                 sinapsis.peso = x
 
     def enviar_estimulos(self):
         """
-        Envía todos los estimulos de la sensación actual en este neuroperceptor mediante las sinapsis que están conectadas a la red receptora.
+        Envía todos los estimulos de la sensación actual, mediante las
+        sinapsis existentes sensor->neurona, a la red receptora.
         """
         for sensor in self.sensores:
             for sinapsis in sensor.vias_eferentes:
