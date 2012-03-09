@@ -20,6 +20,7 @@
 
 import sys
 from nucleo import Nucleo
+from neuroperceptor import NeuroPerceptor
 
 class Serializador(object):
     """
@@ -97,6 +98,70 @@ class Serializador(object):
             neurona = nucleo.crear_neuronas_de_salida(1)
         neurona[0].acumulador = elementos[1]
         self._neuronas[elementos[0]] = neurona[0]
+
+    def _clonar(self, nucleo):
+        """
+        Clona 'nucleo', devolviendo uno nuevo que contiene las mismas
+        neuronas y sinapsis (peso incluido) entre ellas, asi como un
+        neuroperceptor asociado a las entradas. No copia los
+        acumuladores actuales de las neuronas de 'nucleo'.
+        """
+        # TO-DO, comparar rendimiento con otras opciones como pickle o
+        # ... copy.deepcopy().
+        # El núcleo donde se clonará la estructura de 'nucleo'.
+        clon = Nucleo()
+        # Un diccionario "traductor" de neuronas para reconocer a la
+        # ... hora de crear las sinapsis las equivalentes en el clon. Se
+        # ... carga al clonar_grupo.
+        trad = {}
+        #
+        def clonar_neuroperceptor(clon, nucleo_origen):
+            """
+            Clona el neuroperceptor con el mismo número de sensores que
+            las entradas del 'nucleo_origen' en 'clon'.
+            """
+            np = NeuroPerceptor(len(nucleo_origen._entradas))
+            np.conectar_a_entradas(clon)
+        #
+        def clonar_cluster(clon, cluster_original, f_crear):
+            """
+            Clona todas las neuronas del 'cluster_original' dado, en
+            la neurona 'clon'. Carga el diccionario "traductor"
+            externo a este closure.
+
+            Las neuronas se crean con la función 'f_crear'.
+            """
+            # Crear, neurona por neurona, en el clon, guardando la
+            # ... equivalencia en el diccionario "traductor" del
+            # ... método padre de este closure.
+            for n in cluster_original:
+                nueva_neurona = f_crear(1)[0]
+                trad[id(n)] = nueva_neurona
+        #
+        # Al clonar las neuronas, cluster por cluster, se carga también
+        # ... el diccionario traductor 'trad'.
+        # Clonar las entradas y el neuroperceptor.
+        clonar_cluster(clon, nucleo._entradas,
+          clon.crear_neuronas_de_entrada
+        )
+        clonar_neuroperceptor(clon, nucleo)
+        # Clonar las internas y las salidas.
+        clonar_cluster(clon, nucleo._internas,
+          clon.crear_neuronas_internas
+        )
+        clonar_cluster(clon, nucleo._salidas,
+          clon.crear_neuronas_de_salida
+        )
+        # Clonar las sinapsis, utilizando el diccionario "traductor"
+        # ... para reconocer la relación entre las neuronas originales
+        # ... y las clonadas. Respeta los pesos de las sinapsis.
+        for n in nucleo._neuronas:
+            for s in n.vias_eferentes:
+                trad[id(s.neurona_activadora)].crear_sinapsis_saliente(
+                  trad[id(s.neurona_receptora)],
+                  float(s.peso)
+                )
+        return clon
 
     def guardar(self, nucleo, f):
         """
