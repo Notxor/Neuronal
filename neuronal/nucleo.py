@@ -179,6 +179,32 @@ class Nucleo(Glioblasto):
             #print(peso)
             n1.crear_sinapsis_saliente(n2, peso)
 
+    def obtener_genoma(self):
+        """
+        Devuelve el 'genoma' del núcleo, convirtiendo todos los valores
+        relevantes en una lista de genes.
+        """
+        genoma = []
+        # Primer gen con el número de neuronas de cada tipo que tiene el núcleo
+        genoma.append(
+            [len(self._entradas), len(self._internas), len(self._salidas)]
+        )
+        # Segundo gen con la lista de sensibilidades
+        genoma.append(self.neuroperceptor.secuenciar_sensibilidades())
+        # Tantos genes como neuronas tiene el núcleo
+        # ... comienza creando todos los genes con los pesos a cero
+        dimension = len(self._neuronas)
+        for n in xrange(dimension):
+            genoma.append([0 for i in xrange(dimension)])
+        # Recorre todas las sinapsis colocando el peso en el sitio correcto
+        for n in self._neuronas:
+            for s in n.vias_eferentes:
+                # Obtiene la fila de la neurona aferente (hay dos genes antes)
+                fila = genoma[self._neuronas.index(s.neurona_activadora) + 2]
+                columna = self._neuronas.index(s.neurona_receptora)
+                fila[columna] = s.peso
+        return genoma
+
 class SerializadorDot(object):
     def __init__(self):
         pass

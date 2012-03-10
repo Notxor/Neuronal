@@ -56,7 +56,7 @@ class NeuroPerceptor(object):
         recibir_sensacion_externa(self, sensacion)
         enviar_estimulos(self)
     """
-    def __init__(self, cantidad_de_sensores, red = None):
+    def __init__(self, cantidad_de_sensores, sensibilidades = None, red = None):
         """
         Lo crea con una 'cantidad_de_sensores' (inmutables). Si se pasa
         una 'red', se crearían neuronas de entrada en ella, y se
@@ -65,6 +65,10 @@ class NeuroPerceptor(object):
         self.sensores = tuple(
           _Perceptor(self) for i in xrange(cantidad_de_sensores)
         )
+        if sensibilidades is None:
+            self._sensibilidades = [0 for i in xrange(cantidad_de_sensores)]
+        else:
+            self._sensibilidades = sensibilidades
 
         self._red = None
         if red is not None:
@@ -81,9 +85,13 @@ class NeuroPerceptor(object):
         """
         if entradas is None:
             entradas = red._entradas
-        # Conectar los sensores (mediante sinapsis) a las nuevas neuronas.
+        # Conectar los sensores (mediante sinapsis) a las nuevas neuronas
+        # y añadir el factor de sensibilidad al perceptor
         for i in xrange(len(self.sensores)):
-            self.sensores[i].crear_sinapsis_saliente(entradas[i])
+            self.sensores[i].crear_sinapsis_saliente(
+                                                     entradas[i],
+                                                     self._sensibilidades[i]
+                                                     )
         # Se guarda una referencia a la red.
         self._red = red
         # Y una referencia en la red a su neuroperceptor.
@@ -121,3 +129,9 @@ class NeuroPerceptor(object):
         for sensor in self.sensores:
             for sinapsis in sensor.vias_eferentes:
                 sinapsis.estimular()
+
+    def establecer_sensibilidad(self, lista_sensibilidades):
+        self._sensibilidades = lista_sensibilidades
+
+    def secuenciar_sensibilidades(self):
+        return self._sensibilidades
