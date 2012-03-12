@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from nucleo import Nucleo
+import random
 
 class Secuenciador(object):
     '''
@@ -62,3 +63,32 @@ class Secuenciador(object):
         self.nucleo.neuroperceptor.establecer_sensibilidades(genoma[1])
         self._crear_sinapsis(genoma[2:])
         return self.nucleo
+
+    def mezclar_genomas(self, genomaA, genomaB):
+        """
+        Dados dos genomas devuelve un núcleo hijo mezclando los genes de
+        ambos.
+        """
+        selector = [0, 1]
+        genoma = []
+        if genomaA[0] != genomaB[0]:
+            # El raise es temporal hasta que pensemos en una forma de mezclar
+            # genomas con distinto número de neuronas de entrada, salidas e
+            # internas.
+            raise "Los genomas no son compatibles."
+        # Primer gen (en este caso son los dos iguales, si no se ha lanzado una
+        # excepción)
+        genoma.append(genomaA[0])
+        # Mezclar al azar entre todas las sensibilidades.
+        tarro = [genomaA[1], genomaB[1]]
+        gen1 = [0 for i in len(genomaA[1])]
+        for i in len(gen1):
+            gen1[i] = tarro[random.choice(selector)][i]
+        # Añadir el gen al genoma
+        genoma.append(gen1)
+        tarro = [genomaA[2:], genomaB[2:]]
+        for i in len(tarro[0]):
+            genoma.append(tarro[random.choice(selector)][i])
+
+        # Calculado el juego de genes devolver el núcleo
+        return self.secuenciar(genoma)
