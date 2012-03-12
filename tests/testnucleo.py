@@ -143,3 +143,6 @@ class TestCrearSinapsisAlAzar(TestsNucleo):
           min_peso_sinapsis,
           max_peso_sinapsis
         )
+
+class TestObtenerGenoma(TestsNucleo):
+    pass

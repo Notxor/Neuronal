@@ -56,7 +56,7 @@ class NeuroPerceptor(object):
         recibir_sensacion_externa(self, sensacion)
         enviar_estimulos(self)
     """
-    def __init__(self, cantidad_de_sensores, sensibilidades = None, red = None):
+    def __init__(self, cantidad_de_sensores, red = None, sensibilidades = None):
         """
         Lo crea con una 'cantidad_de_sensores' (inmutables). Si se pasa
         una 'red', se crearían neuronas de entrada en ella, y se

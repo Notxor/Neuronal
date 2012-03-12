@@ -30,7 +30,7 @@ class Secuenciador(object):
         '''
         Constructor
         '''
-        self.nucleo
+        self.nucleo = None
 
     def _crear_neuronas(self, gen):
         """
