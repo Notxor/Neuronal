@@ -145,4 +145,18 @@ class TestCrearSinapsisAlAzar(TestsNucleo):
         )
 
 class TestObtenerGenoma(TestsNucleo):
-    pass
+    def runTest(self):
+        n_entradas = 2
+        n = 7
+        n_salidas = 1
+        nucleo = neuronal.Nucleo(n, n_salidas)
+        neuronal.NeuroPerceptor(n_entradas, nucleo)
+        nucleo.crear_sinapsis_al_azar(10, -15, 15)
+        # Obtenemos el genoma
+        genoma = nucleo.obtener_genoma()
+        # Comprueba el largo total del genoma
+        self.assertEqual(len(genoma), 12)
+        # Comprueba el largo del gen del neuroperceptor
+        self.assertEqual(len(genoma[1]), 2)
+        # Comprueba el largo del primer gen de las conexiones de una neurona
+        self.assertEqual(len(genoma[2]), 10)

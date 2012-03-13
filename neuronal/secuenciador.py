@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from nucleo import Nucleo
+from neuroperceptor import NeuroPerceptor
 import random
 
 class Secuenciador(object):
@@ -60,7 +61,10 @@ class Secuenciador(object):
         """
         self.nucleo = Nucleo()
         self._crear_neuronas(genoma[0])
-        self.nucleo.neuroperceptor.establecer_sensibilidades(genoma[1])
+        # 
+        NeuroPerceptor(len(genoma[1]), self.nucleo)
+        #
+        self.nucleo.neuroperceptor.establecer_sensibilidad(genoma[1])
         self._crear_sinapsis(genoma[2:])
         return self.nucleo
 
@@ -73,7 +77,7 @@ class Secuenciador(object):
         genoma = []
         if genomaA[0] != genomaB[0]:
             # El raise es temporal hasta que pensemos en una forma de mezclar
-            # genomas con distinto número de neuronas de entrada, salidas e
+            # genomas con distinto número de neuronas de entrada, salida e
             # internas.
             raise "Los genomas no son compatibles."
         # Primer gen (en este caso son los dos iguales, si no se ha lanzado una
