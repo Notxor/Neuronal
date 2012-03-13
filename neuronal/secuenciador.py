@@ -59,10 +59,10 @@ class Secuenciador(object):
         Genera un nuevo núcleo observando las características que describe el
         parámetro 'genoma'.
         """
-        self.nucleo = Nucleo()
-        self._crear_neuronas(genoma[0])
+        self.nucleo = Nucleo(genoma[0][1], genoma[0][2])
+        #self._crear_neuronas(genoma[0])
         # 
-        NeuroPerceptor(len(genoma[1]), self.nucleo)
+        NeuroPerceptor(genoma[0][0], self.nucleo)
         #
         self.nucleo.neuroperceptor.establecer_sensibilidad(genoma[1])
         self._crear_sinapsis(genoma[2:])
