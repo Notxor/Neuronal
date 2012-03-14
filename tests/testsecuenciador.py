@@ -25,7 +25,7 @@ class TestSecuenciador(unittest.TestCase):
     def setUp(self):
         self.secuenciador = neuronal.Secuenciador()
         self.nucleo = neuronal.Nucleo()
-        self.neuroperceptor = neuronal.NeuroPerceptor(3, self.nucleo)
+        neuronal.NeuroPerceptor(3, self.nucleo)
         self.nucleo.crear_neuronas_de_salida(2)
         self.nucleo.crear_neuronas_internas(7)
         self.nucleo.crear_sinapsis_al_azar(12, -10, 10)
@@ -39,3 +39,25 @@ class TestSecuenciado(TestSecuenciador):
         genoma = self.nucleo.obtener_genoma()
         nucleo1 = self.secuenciador.secuenciar(genoma)
         self.assertEqual(genoma, nucleo1.obtener_genoma())
+
+class TestMezclado(TestSecuenciador):
+    def runTest(self):
+        nucleo1 = self.secuenciador.secuenciar(self.nucleo.obtener_genoma())
+        nucleo1.crear_sinapsis_al_azar(10, -15, 10)
+        genoma = self.nucleo.obtener_genoma()
+        genoma1 = nucleo1.obtener_genoma()
+        self.assertNotEqual(genoma, genoma1)
+        nucleo2 = self.secuenciador.mezclar_genomas(genoma1, genoma)
+        genoma2 = nucleo2.obtener_genoma()
+        self.assertNotEqual(genoma, genoma2)
+        self.assertNotEqual(genoma1, genoma2)
+        nucleo3 = self.secuenciador.mezclar_genomas(genoma1, genoma)
+        genoma3 = nucleo3.obtener_genoma()
+        self.assertNotEqual(genoma2, genoma3)
+
+class TestMutar(TestSecuenciador):
+    def runTest(self):
+        genoma = self.nucleo.obtener_genoma()
+        secuenciador = neuronal.Secuenciador(1.0) # mutar siempre
+        genoma1 = secuenciador.mutar(genoma)
+        self.assertNotEqual(genoma, genoma1)

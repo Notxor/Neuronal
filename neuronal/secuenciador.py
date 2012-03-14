@@ -27,11 +27,12 @@ class Secuenciador(object):
     Un secuenciador es capaz de generar un núcleo a partir de su 'genoma' u
     obtener un núcleo hijo a partir del genoma de dos núcleos padre.
     '''
-    def __init__(self):
+    def __init__(self, tasa_mutacion=0.1):
         '''
         Constructor
         '''
         self.nucleo = None
+        self.tasa_mutacion = tasa_mutacion
 
     def _crear_neuronas(self, gen):
         """
@@ -60,13 +61,26 @@ class Secuenciador(object):
         parámetro 'genoma'.
         """
         self.nucleo = Nucleo(genoma[0][1], genoma[0][2])
-        #self._crear_neuronas(genoma[0])
         # 
         NeuroPerceptor(genoma[0][0], self.nucleo)
         #
         self.nucleo.neuroperceptor.establecer_sensibilidad(genoma[1])
         self._crear_sinapsis(genoma[2:])
         return self.nucleo
+
+    def mutar(self, genoma):
+        """
+        Modifica un gen del genoma.
+        """
+        cromosoma = genoma.index(random.choice(genoma))
+        gen = genoma[cromosoma].index(random.choice(genoma[cromosoma]))
+        # TO-DO La amplitud del cambio debería ser configurable
+        if cromosoma != 1:
+            amplitud = random.uniform(0.0, 20.0)
+            genoma[cromosoma][gen] += random.uniform(-amplitud, amplitud)
+        else:
+            # Se está modificando el número de neuronas
+            pass
 
     def mezclar_genomas(self, genomaA, genomaB):
         """
@@ -83,16 +97,21 @@ class Secuenciador(object):
         # Primer gen (en este caso son los dos iguales, si no se ha lanzado una
         # excepción)
         genoma.append(genomaA[0])
-        # Mezclar al azar entre todas las sensibilidades.
+        # Mezclar al azar entre las sensibilidades de cada uno de los genomas.
         tarro = [genomaA[1], genomaB[1]]
-        gen1 = [0 for i in len(genomaA[1])]
-        for i in len(gen1):
+        gen1 = [0 for i in genomaA[1]]
+        for i in gen1:
             gen1[i] = tarro[random.choice(selector)][i]
         # Añadir el gen al genoma
         genoma.append(gen1)
+        # Repite la operación con los genes de las sinapsis seleccionando al
+        # azar entre los genes de uno u otro progenitor.
         tarro = [genomaA[2:], genomaB[2:]]
-        for i in len(tarro[0]):
+        for i, x in enumerate(tarro[0]):
             genoma.append(tarro[random.choice(selector)][i])
 
+        # Mutar el genoma si procede
+        if random.random() <= self.tasa_mutacion:
+            self.mutar(genoma)
         # Calculado el juego de genes devolver el núcleo
         return self.secuenciar(genoma)
