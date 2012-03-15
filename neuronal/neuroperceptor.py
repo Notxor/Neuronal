@@ -86,12 +86,12 @@ class NeuroPerceptor(object):
         if entradas is None:
             entradas = red._entradas
         # Conectar los sensores (mediante sinapsis) a las nuevas neuronas
-        # y añadir el factor de sensibilidad al perceptor
+        # ... y añadir el factor de sensibilidad al perceptor.
         for i in xrange(len(self.sensores)):
             self.sensores[i].crear_sinapsis_saliente(
                                                      entradas[i],
                                                      self._sensibilidades[i]
-                                                     )
+                                                    )
         # Se guarda una referencia a la red.
         self._red = red
         # Y una referencia en la red a su neuroperceptor.

@@ -185,21 +185,22 @@ class Nucleo(Glioblasto):
         relevantes en una lista de genes.
         """
         genoma = []
-        # Primer gen con el número de neuronas de cada tipo que tiene el núcleo
+        # Primer gen: el número de neuronas de cada tipo.
         genoma.append(
             [len(self._entradas), len(self._internas), len(self._salidas)]
         )
-        # Segundo gen con la lista de sensibilidades
+        # Segundo gen: lista de sensibilidades.
         genoma.append(self.neuroperceptor.secuenciar_sensibilidades())
-        # Tantos genes como neuronas tiene el núcleo
-        # ... comienza creando todos los genes con los pesos a cero
+        # Tantos genes como neuronas en el núcleo,
+        # ... comienza creando todos los genes con los pesos a cero.
         dimension = len(self._neuronas)
         for n in xrange(dimension):
             genoma.append([0 for i in xrange(dimension)])
-        # Recorre todas las sinapsis colocando el peso en el sitio correcto
+        # Recorrer las sinapsis colocando el peso en el sitio correcto.
         for n in self._neuronas:
             for s in n.vias_eferentes:
-                # Obtiene la fila de la neurona aferente (hay dos genes antes)
+                # Obtener la fila de la neurona aferente,
+                # ... (hay dos genes antes)
                 fila = genoma[self._neuronas.index(s.neurona_activadora) + 2]
                 columna = self._neuronas.index(s.neurona_receptora)
                 fila[columna] = s.peso
