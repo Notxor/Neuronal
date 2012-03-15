@@ -201,6 +201,8 @@ class Nucleo(Glioblasto):
             for s in n.vias_eferentes:
                 # Obtener la fila de la neurona aferente,
                 # ... (hay dos genes antes)
+                # TO-DO, BUG, dependiente del orden de creación de las
+                # ... neuronas. No es fiable.
                 fila = genoma[self._neuronas.index(s.neurona_activadora) + 2]
                 columna = self._neuronas.index(s.neurona_receptora)
                 fila[columna] = s.peso
