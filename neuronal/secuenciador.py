@@ -38,9 +38,13 @@ class Secuenciador(object):
         Crea las neuronas según establece 'gen' (un primer gen de un
         genoma).
         """
+        # TO-DO, ¿es necesario? No se llama nunca porque secuenciar()
+        # ... se encarga de crearlas a la vez que el Nucleo y el
+        # ... NeuroPerceptor.
         # TO-DO, No estaría de más un poco de programación defensiva.
         self.nucleo.crear_neuronas_de_entrada(gen[0])
         self.nucleo.crear_neuronas_internas(gen[1])
+        # TO-DO, BUG, Se crean internas de nuevo, en vez de salidas.
         self.nucleo.crear_neuronas_internas(gen[2])
 
     def _crear_sinapsis(self, genes):
@@ -65,6 +69,9 @@ class Secuenciador(object):
         NeuroPerceptor(genoma[0][0], self.nucleo)
         #
         self.nucleo.neuroperceptor.establecer_sensibilidad(genoma[1])
+        # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
+        # ... gen son "sinapsis". Acotar, por ejemplo, utilizando la
+        # ... información del gen0.
         self._crear_sinapsis(genoma[2:])
         return self.nucleo
 
@@ -72,10 +79,19 @@ class Secuenciador(object):
         """
         Modifica un gen del genoma.
         """
+        # TO-DO, la nomenclatura 'cromosoma' es nueva y no cuadra con
+        # ... la utilizada en el resto del fichero. Aquí se le está
+        # ... llamando 'cromosoma' a lo que siempre se ha llamado 'gen',
+        # ... y 'gen' a algo que no se había bautizado (exón?).
+        # TO-DO, la combinación index() y choice() es rebuscada e
+        # ... ineficiente.
         cromosoma = genoma.index(random.choice(genoma))
         gen = genoma[cromosoma].index(random.choice(genoma[cromosoma]))
-        # TO-DO, La amplitud del cambio debería ser configurable.
+        # TO-DO, BUG, no tiene en cuenta el gen0.
+        # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
+        # ... gen son "sinapsis".
         if cromosoma != 1:
+            # TO-DO, La amplitud del cambio debería ser configurable.
             amplitud = random.uniform(0.0, 20.0)
             genoma[cromosoma][gen] += random.uniform(-amplitud, amplitud)
         else:
@@ -87,6 +103,7 @@ class Secuenciador(object):
         Dados dos genomas devuelve un núcleo hijo mezclando los genes de
         ambos.
         """
+        # TO-DO, 'selector' es innecesario.
         selector = [0, 1]
         genoma = []
         if genomaA[0] != genomaB[0]:
@@ -98,15 +115,27 @@ class Secuenciador(object):
         # ... lanzado una excepción previamente).
         genoma.append(genomaA[0])
         # Mezclar al azar las sensibilidades de cada uno de los genomas,
+        # TO-DO, 'tarro' es innecesario.
         tarro = [genomaA[1], genomaB[1]]
+        # TO-DO, No hace falta precargar 'gen1', ya obtendrá valores en
+        # ... en bucle.
         gen1 = [0 for i in genomaA[1]]
+        # TO-DO, BUG, 'i' es un valor, no un índice.
         for i in gen1:
             gen1[i] = tarro[random.choice(selector)][i]
         # ... y añadir el gen mezclado al genoma.
         genoma.append(gen1)
         # Intercalar, al azar, genes de ambos progenitores en el nuevo
         # ... genoma.
+        # TO-DO, 'tarro' es innecesario: se puede hacer el choice sobre
+        # ... (genomaA, genomaB), ahorrando de paso la memoria requerida
+        # ... por la copia de datos que hace la slice, ya que un xrange()
+        # ... en el bucle se puede encargar de delimitar mejor.
+        # TO-DO, No dar por hecho que lo que hay a partir del tercer
+        # ... gen son sinapsis.
         tarro = [genomaA[2:], genomaB[2:]]
+        # TO-DO, No se utiliza el elemento enumerado 'x', por lo tanto
+        # ... eliminar la enumeración en favor de un xrange() adecuado.
         for i, x in enumerate(tarro[0]):
             genoma.append(tarro[random.choice(selector)][i])
         #
@@ -114,4 +143,12 @@ class Secuenciador(object):
         if random.random() <= self.tasa_mutacion:
             self.mutar(genoma)
         # Calculado el juego de genes, devolver el núcleo.
+        # TO-DO, devolver el genoma, sino el llamante, que podría querer
+        # ... el genoma, tendría que recalcularlo desde el núcleo,
+        # ... algo que ya tenemos a mano. El núcleo lo puede coger él
+        # ... mismo de .nucleo, o secuenciarlo posteriormente si lo
+        # ... desea. Yo incluso diría que mejor no secuenciar aquí, y
+        # ... proporcionar un método que haga mezcla y secuenciación
+        # ... explícitamente si se desea, por ejemplo
+        # ... mezclar_genomas_y_secuenciar(genomaA, genomaB)
         return self.secuenciar(genoma)
