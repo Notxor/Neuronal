@@ -44,8 +44,7 @@ class Secuenciador(object):
         # TO-DO, No estaría de más un poco de programación defensiva.
         self.nucleo.crear_neuronas_de_entrada(gen[0])
         self.nucleo.crear_neuronas_internas(gen[1])
-        # TO-DO, BUG, Se crean internas de nuevo, en vez de salidas.
-        self.nucleo.crear_neuronas_internas(gen[2])
+        self.nucleo.crear_neuronas_de_salida(gen[2])
 
     def _crear_sinapsis(self, genes):
         """
