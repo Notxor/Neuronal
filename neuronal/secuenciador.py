@@ -33,19 +33,6 @@ class Secuenciador(object):
         self.nucleo = None
         self.tasa_mutacion = tasa_mutacion
 
-    def _crear_neuronas(self, gen):
-        """
-        Crea las neuronas según establece 'gen' (un primer gen de un
-        genoma).
-        """
-        # TO-DO, ¿es necesario? No se llama nunca porque secuenciar()
-        # ... se encarga de crearlas a la vez que el Nucleo y el
-        # ... NeuroPerceptor.
-        # TO-DO, No estaría de más un poco de programación defensiva.
-        self.nucleo.crear_neuronas_de_entrada(gen[0])
-        self.nucleo.crear_neuronas_internas(gen[1])
-        self.nucleo.crear_neuronas_de_salida(gen[2])
-
     def _crear_sinapsis(self, genes):
         """
         Crea las sinapsis del núcleo a partir de la información en
@@ -141,7 +128,7 @@ class Secuenciador(object):
             genoma.append(tarro[random.choice(selector)][i])
         #
         # Si procede, mutar el genoma.
-        if random.random() <= self.tasa_mutacion:
+        if random.random() < self.tasa_mutacion:
             self.mutar(genoma)
         # Calculado el nuevo genoma, devolverlo.
         return genoma
