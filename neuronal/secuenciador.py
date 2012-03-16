@@ -76,19 +76,18 @@ class Secuenciador(object):
 
     def mutar(self, genoma):
         """
-        Modifica un gen del genoma.
+        Modifica un exón de un gen de 'genoma'.
         """
-        # TO-DO, la combinación index() y choice() es rebuscada e
-        # ... ineficiente.
-        gen = genoma.index(random.choice(genoma))
-        exon = genoma[gen].index(random.choice(genoma[gen]))
+        # Posición de un exón al azar, de un gen al azar.
+        i_gen = random.randint(0, len(genoma))
+        j_exon = random.randint(0, len(genoma[i_gen]))
         # TO-DO, BUG, no tiene en cuenta el gen0.
         # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
         # ... gen son "sinapsis".
-        if gen != 1:
+        if i_gen != 1:
             # TO-DO, La amplitud del cambio debería ser configurable.
             amplitud = random.uniform(0.0, 20.0)
-            genoma[gen][exon] += random.uniform(-amplitud, amplitud)
+            genoma[i_gen][j_exon] += random.uniform(-amplitud, amplitud)
         else:
             # Se está modificando el número de neuronas.
             pass
