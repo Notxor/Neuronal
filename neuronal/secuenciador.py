@@ -96,6 +96,12 @@ class Secuenciador(object):
         Mezcla al azar los genes de los dos genomas dados en un nuevo
         genoma, que se devuelve.
         """
+        # TO-DO, hay cierta inconsistencia relativa a lo que se considera
+        # ... "unidad de mezcla", ya que en unos casos se mezcla
+        # ... por exones (las sensibilidades) y en otros por genes. Es
+        # ... posible que haya que reorganizar el genoma para evitarlo,
+        # ... por ejemplo, haciendo que las sensibilidades sean genes
+        # ... propiamente dichos.
         # TO-DO, 'selector' es innecesario.
         selector = [0, 1]
         genoma = []
