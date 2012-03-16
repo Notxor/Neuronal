@@ -123,9 +123,11 @@ class Secuenciador(object):
         # ... (genomaA, genomaB), ahorrando de paso la memoria requerida
         # ... por la copia de datos que hace la slice, ya que un xrange()
         # ... en el bucle se puede encargar de delimitar mejor.
-        # TO-DO, No dar por hecho que lo que hay a partir del tercer
-        # ... gen son sinapsis.
-        tarro = [genomaA[2:], genomaB[2:]]
+        num_neuronas = int(genomaA[0][0] + genomaA[0][1] + genomaA[0][2])
+        tarro = [
+          genomaA[2:2 + num_neuronas + 1],
+          genomaB[2:2 + num_neuronas + 1]
+        ]
         # TO-DO, No se utiliza el elemento enumerado 'x', por lo tanto
         # ... eliminar la enumeración en favor de un xrange() adecuado.
         for i, x in enumerate(tarro[0]):
