@@ -78,21 +78,17 @@ class Secuenciador(object):
         """
         Modifica un gen del genoma.
         """
-        # TO-DO, la nomenclatura 'cromosoma' es nueva y no cuadra con
-        # ... la utilizada en el resto del fichero. Aquí se le está
-        # ... llamando 'cromosoma' a lo que siempre se ha llamado 'gen',
-        # ... y 'gen' a algo que no se había bautizado (exón?).
         # TO-DO, la combinación index() y choice() es rebuscada e
         # ... ineficiente.
-        cromosoma = genoma.index(random.choice(genoma))
-        gen = genoma[cromosoma].index(random.choice(genoma[cromosoma]))
+        gen = genoma.index(random.choice(genoma))
+        exon = genoma[gen].index(random.choice(genoma[gen]))
         # TO-DO, BUG, no tiene en cuenta el gen0.
         # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
         # ... gen son "sinapsis".
-        if cromosoma != 1:
+        if gen != 1:
             # TO-DO, La amplitud del cambio debería ser configurable.
             amplitud = random.uniform(0.0, 20.0)
-            genoma[cromosoma][gen] += random.uniform(-amplitud, amplitud)
+            genoma[gen][exon] += random.uniform(-amplitud, amplitud)
         else:
             # Se está modificando el número de neuronas.
             pass
