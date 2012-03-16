@@ -65,8 +65,8 @@ class Secuenciador(object):
         Modifica un exón de un gen de 'genoma'.
         """
         # Posición de un exón al azar, de un gen al azar.
-        i_gen = random.randint(0, len(genoma))
-        j_exon = random.randint(0, len(genoma[i_gen]))
+        i_gen = random.randint(0, len(genoma) - 1)
+        j_exon = random.randint(0, len(genoma[i_gen]) - 1)
         # TO-DO, BUG, no tiene en cuenta el gen0.
         # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
         # ... gen son "sinapsis".
