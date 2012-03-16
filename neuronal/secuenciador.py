@@ -128,9 +128,7 @@ class Secuenciador(object):
           genomaA[2:2 + num_neuronas + 1],
           genomaB[2:2 + num_neuronas + 1]
         ]
-        # TO-DO, No se utiliza el elemento enumerado 'x', por lo tanto
-        # ... eliminar la enumeración en favor de un xrange() adecuado.
-        for i, x in enumerate(tarro[0]):
+        for i in xrange(num_neuronas):
             genoma.append(tarro[random.choice(selector)][i])
         #
         # Si procede, mutar el genoma.
