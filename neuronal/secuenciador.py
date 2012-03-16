@@ -60,18 +60,17 @@ class Secuenciador(object):
 
     def secuenciar(self, genoma):
         """
-        Genera un nuevo núcleo observando las características que describe
-        'genoma'.
+        Genera un nuevo núcleo observando las características que se
+        describen en 'genoma'.
         """
         self.nucleo = Nucleo(genoma[0][1], genoma[0][2])
         #
         NeuroPerceptor(genoma[0][0], self.nucleo)
         #
         self.nucleo.neuroperceptor.establecer_sensibilidad(genoma[1])
-        # TO-DO, no dar por hecho que todo lo que hay a partir del tercer
-        # ... gen son "sinapsis". Acotar, por ejemplo, utilizando la
-        # ... información del gen0.
-        self._crear_sinapsis(genoma[2:])
+        #
+        num_neuronas = int(genoma[0][0] + genoma[0][1] + genoma[0][2])
+        self._crear_sinapsis(genoma[2:2 + num_neuronas + 1])
         return self.nucleo
 
     def mutar(self, genoma):
