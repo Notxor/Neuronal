@@ -116,12 +116,9 @@ class Secuenciador(object):
         # Mezclar al azar las sensibilidades de cada uno de los genomas,
         # TO-DO, 'tarro' es innecesario.
         tarro = [genomaA[1], genomaB[1]]
-        # TO-DO, No hace falta precargar 'gen1', ya obtendrá valores en
-        # ... en bucle.
-        gen1 = [0 for i in genomaA[1]]
-        # TO-DO, BUG, 'i' es un valor, no un índice.
-        for i in gen1:
-            gen1[i] = tarro[random.choice(selector)][i]
+        gen1 = []
+        for i in xrange(len(genomaA[1])):
+            gen1.append(tarro[random.choice(selector)][i])
         # ... y añadir el gen mezclado al genoma.
         genoma.append(gen1)
         # Intercalar, al azar, genes de ambos progenitores en el nuevo
