@@ -47,12 +47,10 @@ class TestMezclado(TestSecuenciador):
         genoma = self.nucleo.obtener_genoma()
         genoma1 = nucleo1.obtener_genoma()
         self.assertNotEqual(genoma, genoma1)
-        nucleo2 = self.secuenciador.mezclar_genomas(genoma1, genoma)
-        genoma2 = nucleo2.obtener_genoma()
+        genoma2 = self.secuenciador.mezclar_genomas(genoma1, genoma)
         self.assertNotEqual(genoma, genoma2)
         self.assertNotEqual(genoma1, genoma2)
-        nucleo3 = self.secuenciador.mezclar_genomas(genoma1, genoma)
-        genoma3 = nucleo3.obtener_genoma()
+        genoma3 = self.secuenciador.mezclar_genomas(genoma1, genoma)
         self.assertNotEqual(genoma2, genoma3)
 
 class TestMutar(TestSecuenciador):

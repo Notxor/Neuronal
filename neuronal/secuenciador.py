@@ -94,8 +94,8 @@ class Secuenciador(object):
 
     def mezclar_genomas(self, genomaA, genomaB):
         """
-        Dados dos genomas devuelve un núcleo hijo mezclando los genes de
-        ambos.
+        Mezcla al azar los genes de los dos genomas dados en un nuevo
+        genoma, que se devuelve.
         """
         # TO-DO, BUG, la mezcla está conteniendo referencias a los
         # ... originales, y no copias de los genes.
@@ -135,13 +135,12 @@ class Secuenciador(object):
         # Si procede, mutar el genoma.
         if random.random() <= self.tasa_mutacion:
             self.mutar(genoma)
-        # Calculado el juego de genes, devolver el núcleo.
-        # TO-DO, devolver el genoma, sino el llamante, que podría querer
-        # ... el genoma, tendría que recalcularlo desde el núcleo,
-        # ... algo que ya tenemos a mano. El núcleo lo puede coger él
-        # ... mismo de .nucleo, o secuenciarlo posteriormente si lo
-        # ... desea. Yo incluso diría que mejor no secuenciar aquí, y
-        # ... proporcionar un método que haga mezcla y secuenciación
-        # ... explícitamente si se desea, por ejemplo
-        # ... mezclar_genomas_y_secuenciar(genomaA, genomaB)
-        return self.secuenciar(genoma)
+        # Calculado el nuevo genoma, devolverlo.
+        return genoma
+
+    def mezclar_genomas_y_secuenciar(self, genomaA, genomaB):
+        """
+        Dados dos genomas devuelve un núcleo secuenciado de la mezcla,
+        al azar, de los genes de ambos.
+        """
+        return self.secuenciar(self.mezclar_genomas(genomaA, genomaB))
