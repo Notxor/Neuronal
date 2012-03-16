@@ -97,6 +97,8 @@ class Secuenciador(object):
         Dados dos genomas devuelve un núcleo hijo mezclando los genes de
         ambos.
         """
+        # TO-DO, BUG, la mezcla está conteniendo referencias a los
+        # ... originales, y no copias de los genes.
         # TO-DO, 'selector' es innecesario.
         selector = [0, 1]
         genoma = []
