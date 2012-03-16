@@ -96,8 +96,6 @@ class Secuenciador(object):
         Mezcla al azar los genes de los dos genomas dados en un nuevo
         genoma, que se devuelve.
         """
-        # TO-DO, BUG, la mezcla está conteniendo referencias a los
-        # ... originales, y no copias de los genes.
         # TO-DO, 'selector' es innecesario.
         selector = [0, 1]
         genoma = []
@@ -107,14 +105,16 @@ class Secuenciador(object):
             # ... entrada, salida e internas.
             raise "Los genomas no son compatibles."
         # Primer gen (en este caso son los dos iguales, sino se habría
-        # ... lanzado una excepción previamente).
-        genoma.append(genomaA[0])
+        # ... lanzado una excepción previamente). El list() asegura que
+        # ... se añada una copia, y no una referencia al gen original.
+        genoma.append(list(genomaA[0]))
         # Mezclar al azar las sensibilidades de cada uno de los genomas,
         # TO-DO, 'tarro' es innecesario.
         tarro = [genomaA[1], genomaB[1]]
         gen1 = []
         for i in xrange(len(genomaA[1])):
-            gen1.append(tarro[random.choice(selector)][i])
+            # El float() asegura que lo que se añade es una copia.
+            gen1.append(float(tarro[random.choice(selector)][i]))
         # ... y añadir el gen mezclado al genoma.
         genoma.append(gen1)
         # Intercalar, al azar, genes de ambos progenitores en el nuevo
@@ -129,6 +129,9 @@ class Secuenciador(object):
           genomaB[2:2 + num_neuronas + 1]
         ]
         for i in xrange(num_neuronas):
+            # No es necesario copiar lo escogido al azar (como en los
+            # ... list() ó float() de los casos anteriores) porque las
+            # ... slices que componen este tarro ya hacen que sean copias.
             genoma.append(tarro[random.choice(selector)][i])
         #
         # Si procede, mutar el genoma.
