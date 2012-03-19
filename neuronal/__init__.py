@@ -27,3 +27,4 @@ from neuroperceptor import NeuroPerceptor
 from neuromotor import NeuroMotor
 from serializador import Serializador
 from secuenciador import Secuenciador
+from genoma import Genoma

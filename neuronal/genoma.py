@@ -18,12 +18,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#from nucleo import Nucleo
+
 class Genoma(object):
-    '''
+    """
     Contiene las instrucciones genéticas de un núcleo.
-    '''
-    def __init__(self):
-        '''
+    """
+    def __init__(self, nucleo=None):
+        """
         Constructor
-        '''
-        pass
+        """
+        if nucleo == None:
+            self.cromosoma_size = [0, 0, 0]
+            self.cromosoma_sensibilidad = []
+            self.cromosomas_sinapsis = []

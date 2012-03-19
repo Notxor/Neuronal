@@ -20,6 +20,7 @@
 
 from nucleo import Nucleo
 from neuroperceptor import NeuroPerceptor
+from genoma import Genoma
 import random
 
 class Secuenciador(object):
