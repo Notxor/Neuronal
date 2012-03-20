@@ -183,33 +183,9 @@ class Nucleo(Glioblasto):
     def obtener_genoma(self):
         """
         Devuelve el 'genoma' del núcleo, convirtiendo todos los valores
-        relevantes en una lista de genes.
+        relevantes en un conjunto de genes.
         """
-        genm = Genoma()
-        # Primer gen: el número de cromosoma_size de cada tipo.
-        genm.cromosoma_size(
-            [len(self._entradas), len(self._internas), len(self._salidas)]
-        )
-        # Segundo gen: lista de sensibilidades.
-        genm.cromosoma_sensibilidad(self.neuroperceptor.secuenciar_sensibilidades())
-        # Tantos genes como neuronas en el núcleo,
-        # ... comienza creando todos los genes con los pesos a cero.
-        dimension = len(self._neuronas)
-        for n in xrange(dimension):
-            genm.cromosomas_sinapsis.append([0 for i in xrange(dimension)])
-        # Recorrer las sinapsis colocando el peso en el sitio correcto.
-        for n in self._neuronas:
-            for s in n.vias_eferentes:
-                # Obtener la fila de la neurona aferente,
-                # ... (hay dos genes antes)
-                # TO-DO, BUG, dependiente del orden de creación de las
-                # ... neuronas. No es fiable.
-                fila = genm.cromosomas_sinapsis[
-                                self._neuronas.index(s.neurona_activadora) + 2
-                                    ]
-                columna = self._neuronas.index(s.neurona_receptora)
-                fila[columna] = s.peso
-        return genm
+        return Genoma(self)
 
 class SerializadorDot(object):
     def __init__(self):
