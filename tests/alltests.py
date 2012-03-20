@@ -31,6 +31,7 @@ import testnucleo
 import testneuroperceptor
 import testneuromotor
 import testsecuenciador
+import testgenoma
 
 class AllTests(unittest.TestSuite):
     def __init__(self):
@@ -52,6 +53,8 @@ class AllTests(unittest.TestSuite):
         self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testneuromotor))
         # cargar los tests para la clase Secuenciador
         self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testsecuenciador))
+        # cargar los tests para la clase Genoma
+        self.suite.addTest(unittest.TestLoader().loadTestsFromModule(testgenoma))
 
         self.corredor = unittest.TextTestRunner(verbosity=2)
 

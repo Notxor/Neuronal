@@ -56,6 +56,5 @@ class TestMezclado(TestSecuenciador):
 class TestMutar(TestSecuenciador):
     def runTest(self):
         genoma = self.nucleo.obtener_genoma()
-        secuenciador = neuronal.Secuenciador(1.0) # mutar siempre
-        genoma1 = secuenciador.mutar(genoma)
+        genoma1 = genoma.mutar()
         self.assertNotEqual(genoma, genoma1)
