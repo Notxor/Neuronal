@@ -34,7 +34,7 @@ class Genoma(object):
         self.cromosoma_size = [0, 0, 0]
         self.cromosoma_sensibilidad = []
         self.cromosomas_sinapsis = []
-        if nucleo != None:
+        if nucleo is not None:
             self.obtener_genoma(nucleo)
 
     def __eq__(self, otro):
@@ -109,9 +109,8 @@ class Genoma(object):
                                                                   )
         else:
             # Se modifican sinapsis
-            i_crom = i_crom - 2
-            n_cromosoma = random.choice(self.cromosomas_sinapsis[i_crom])
-            cromosoma = self.cromosomas_sinapsis[n_cromosoma]
+            i_crom = int(i_crom - 2)
+            cromosoma = self.cromosomas_sinapsis[i_crom]
             i_gen = random.randint(0, len(cromosoma) - 1)
             amplitud = random.uniform(0.0, 20.0)
             cromosoma[i_gen] += random.uniform(-amplitud, amplitud)
