@@ -17,38 +17,22 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-import Tkinter as tkinter
-import ttk
+import sys
+from PyQt4 import QtGui
 
-class Aplicacion(ttk.Frame):
+class Aplicacion(QtGui.QApplication):
     def say_hi(self):
         print "¡Hola a todos!"
 
-    def __init__(self, master=None):
-        ttk.Frame.__init__(self, master)
-        self.pack()
+    def __init__(self):
+        self.app = QtGui.QApplication(sys.argv)
+        self.ventana = QtGui.QWidget()
+        self.ventana.setWindowTitle("Mi ventana")
         self.crear_widgets()
+        self.ventana.show()
 
     def crear_widgets(self):
-        self.QUIT = ttk.Button(self)
-        self.QUIT["text"] = "Salir"
-        style = ttk.Style()
-        style.configure("Rojo.TButton", foreground="red")
+        self.ventana.resize(300, 300)
 
-        self.QUIT["command"] =  self.quit
-        self.QUIT["style"] = "Rojo.TButton"
-
-        self.QUIT.pack({"side": "left"})
-
-        self.hi_there = ttk.Button(self)
-        self.hi_there["text"] = "Hola",
-        self.hi_there["command"] = self.say_hi
-
-        self.hi_there.pack({"side": "left"})
-
-raiz = tkinter.Tk()
-#raiz.iconbitmap("usb.ico") # En linux no funciona
-raiz.title("Prueba con Tkinter")
-app = Aplicacion(master=raiz)
-app.mainloop()
-raiz.destroy()
+app = Aplicacion()
+sys.exit(app.app.exec_())
